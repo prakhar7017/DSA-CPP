@@ -34,8 +34,8 @@ vector<bool> segmentedSieve(int L, int R) {
     segSieve[L] = false;
   }
   for (auto prime : basePrimes) {
-    int fm = (L / prime) * prime;
-    fm = fm < L ? fm + prime : fm;
+    int fm = (L / prime) * prime; // first divide hone wala number with prime in that range
+    fm = fm < L ? fm + prime : fm; // if fm chota hh L se toh usme ith prime add krdo
     int j = max(fm, prime * prime);
     while (j <= R) {
       segSieve[j - L] = false;
