@@ -40,3 +40,34 @@ public:
 };
 
 // time complexity:O(n) space complexity:O(n) 
+
+
+// recursive solution:
+class Solution {
+    private:
+    void maxProfitFind(vector<int>& prices,int i,int &minPrice,int &maxProfit){
+        //base case
+        if(i>=prices.size()){
+            return;
+        }
+        //processing
+        if(prices[i]<minPrice){
+            minPrice=prices[i];
+        }
+        int todayProfit=prices[i]-minPrice;
+        if(todayProfit>maxProfit){
+            maxProfit=todayProfit;
+        }
+        //re calls
+        maxProfitFind(prices,i+1,minPrice,maxProfit);
+    }
+public:
+    int maxProfit(vector<int>& prices) {
+        int minPrice=INT_MAX;
+        int maxProfit=INT_MIN;
+        maxProfitFind(prices,0,minPrice,maxProfit);
+        return maxProfit;
+    }
+};
+
+// time comeplexity:O(n) space complexity:O(n)
