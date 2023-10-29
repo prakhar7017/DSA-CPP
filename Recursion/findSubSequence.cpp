@@ -38,3 +38,5 @@ int main() {
   return 0;
 }
 
+// time complexity : O(2^n) n is the size of the string
+
