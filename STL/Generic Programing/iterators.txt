@@ -1,0 +1,13 @@
+In C++, iterators are a concept used to traverse and manipulate elements in various data structures like arrays, vectors, lists, and other container classes. Iterators provide a uniform way to access elements, making it possible to write generic algorithms that work with different container types.
+
+There are several types of iterators in C++:
+
+Input Iterators: These iterators allow read-only access to the elements in a container, and you can only move forward in the container. They are typically used for operations like reading values from a stream or checking equality.
+
+Output Iterators: These iterators allow write-only access to the elements in a container, and you can only move forward. They are used for operations like writing values to a stream or appending elements to a container.
+
+Forward Iterators: These iterators can be used for both reading and writing. They allow movement in only one direction, similar to input and output iterators.
+
+Bidirectional Iterators: These iterators support both forward and backward movement through the container. You can decrement them to move backward.
+
+Random Access Iterators: These are the most powerful iterators, offering random access to elements. You can perform operations like addition, subtraction, and comparison to move to any element in constant time. Arrays and vectors support random access iterators.
