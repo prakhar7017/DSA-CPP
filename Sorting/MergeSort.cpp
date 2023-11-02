@@ -1,26 +1,20 @@
 #include <iostream>
 using namespace std;
 
-void merge(int arr[],int s,int e){
-
+template<typename T>
+void merge(T arr[],int s,int e){
   int mid=s+(e-s)/2;
 
-  //find size of left part
   int lenLeft=mid-s+1;
-  // find size of right part
   int lenRight=e-mid;
 
-  // allocate memory to derived size of array
-  int *left=new int[lenLeft];
-  int *right=new int[lenRight];
+  T *left=new T[lenLeft];
+  T *right=new T[lenRight];
 
-  //copy values from orignal array to left array
   int k=s;
   for(int i=0;i<lenLeft;i++){
     left[i]=arr[k++];
   }
-
-  //copy values from orignal array to right array
   k=mid+1;
   for(int i=0;i<lenRight;i++){
     right[i]=arr[k++];
@@ -28,11 +22,9 @@ void merge(int arr[],int s,int e){
 
   int leftIndex=0;
   int rightIndex=0;
-  //yahi pr galti karte h log
-	int mainArrayIndex = s;
+  int mainArrayIndex=s;
 
-  // main merge logic 
-  while(leftIndex < lenLeft && rightIndex < lenRight){
+  while(leftIndex < lenLeft && rightIndex <lenRight){
     if(left[leftIndex]<right[rightIndex]){
       arr[mainArrayIndex++]=left[leftIndex++];
     }else{
@@ -40,51 +32,49 @@ void merge(int arr[],int s,int e){
     }
   }
 
-  while(leftIndex<lenLeft){
+  while(leftIndex < lenLeft){
     arr[mainArrayIndex++]=left[leftIndex++];
   }
-  while(rightIndex<lenRight){
-     arr[mainArrayIndex++]=right[rightIndex++];
+
+  while(rightIndex <lenRight){
+    arr[mainArrayIndex++]=right[rightIndex++];
   }
 
-  // delete the heap memory
   delete[] left;
   delete[] right;
 }
-
-void mergeSort(int arr[],int s,int e){
+template<typename T>
+void mergeSort(T arr[],int s,int e){
   //base case
   if(s>=e){
-    return;
+    return ;
   }
   //processing
   int mid=s+(e-s)/2;
 
-  //recursion->left
+  //recursive calls
   mergeSort(arr,s,mid);
 
-  //recursion->right
   mergeSort(arr,mid+1,e);
 
-  //merge
   merge(arr,s,e);
 }
 
-int main() {
-  int arr[]={6,5,4,3,2,1};
+int main(){
+  // float arr[]={6.5,5.5,4.5,3.5,2.5,1.5};
+  char arr[]={'f','e','d','c','b','a'};
   int size=6;
   int s=0;
   int e=size-1;
-  cout<<"before merge sort: "<<endl;
-  for(auto i:arr){
-    cout<<i<<" ";
+  cout<<"before sort"<<endl;
+  for(auto it:arr){
+    cout<<it<<" ";
   }
   cout<<endl;
   mergeSort(arr,s,e);
-   cout<<"after merge sort: "<<endl;
-  for(auto i:arr){
-    cout<<i<<" ";
+   cout<<"after sort"<<endl;
+  for(auto it:arr){
+    cout<<it<<" ";
   }
-  
   return 0;
 }
