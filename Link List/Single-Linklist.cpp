@@ -15,6 +15,10 @@ class Node{
       this->data=data;
       this->next=NULL;
     }
+    ~Node(){
+      cout<<"Destructor called for: "<<this->data<<endl;
+    
+    }
 };
 
 void print(Node* head){
@@ -82,7 +86,44 @@ void insertAtPosition(int data,int position,Node* &head,Node* &tail){
   }
 }
 
+void deleteNode(Node* &head,Node* &tail,int position){
+  if(head==NULL){
+    cout<<"List is empty"<<endl;
+  }
 
+  if(head==tail){
+    Node* temp=head;
+    delete temp;
+    head=NULL;
+    tail=NULL;
+  }
+  int len=findLen(head);
+    if(position==1){
+      Node* temp=head;
+      head=head->next;
+      temp->next=NULL;
+      delete temp;
+    }else if(position==len){
+      Node* prev=head;
+      while(prev->next!=tail){
+        prev=prev->next;
+      }
+      prev->next=NULL;
+      delete tail;
+      tail=prev;
+    }else{
+      Node* prev=NULL;
+      Node* curr=head;
+      while(position!=1){
+        prev=curr;
+        curr=curr->next;
+        position--;
+      }
+      prev->next=curr->next;
+      curr->next=NULL;
+      delete curr;
+    }
+}
 
 int main() {
   Node* head=NULL;
@@ -98,8 +139,11 @@ int main() {
   insertAtPosition(45,5,head,tail);
   insertAtPosition(65,8,head,tail);
   int len=findLen(head);
-  cout<<"len->"<<len<<endl;
+  cout<<"before deletion:";
+  print(head);
 
+  deleteNode(head,tail,9);
+  cout<<"after deletion:";
   print(head);
 
   return 0;
