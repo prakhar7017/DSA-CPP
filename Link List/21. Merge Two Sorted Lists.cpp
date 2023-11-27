@@ -41,7 +41,33 @@ public:
     }
 };
 
+// ----------------------------OR---------------------------------
+// recursion approach
+class Solution {
+    private:
+    ListNode* mergeList(ListNode*&a,ListNode*&b){
+        if(!a) return b;
+        if(!b) return a;
+
+        ListNode* ans=0;
+        if(a->val<=b->val){
+            ans=a;
+            a->next=mergeList(a->next,b);
+        }else{
+            ans=b;
+            b->next=mergeList(a,b->next);
+        }
+
+        return ans;
+    }
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        return mergeList(list1,list2);
+    }
+};
+
 // time complexity:O(n)
 // space complexity:O(1)
 
 // https://leetcode.com/problems/merge-two-sorted-lists/
+
