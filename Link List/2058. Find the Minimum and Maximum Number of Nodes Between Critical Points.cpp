@@ -43,3 +43,11 @@ public:
         return ans;
     }
 };
+
+// time complexity:O(n) space complexity:O(1)
+
+// https://leetcode.com/problems/find-the-minimum-and-maximum-number-of-nodes-between-critical-points/
+
+
+
+
