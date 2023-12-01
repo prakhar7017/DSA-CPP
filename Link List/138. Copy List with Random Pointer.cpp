@@ -22,3 +22,44 @@ public:
         return helper(head,mp);
     }
 };
+
+// time complexity: O(N2)
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head) return 0;
+        // clone A to A'
+        Node* it=head;
+        while(it){
+            Node* cloneNode=new Node(it->val);
+            cloneNode->next=it->next;
+            it->next=cloneNode;
+            it=it->next->next;
+        }
+
+        // assign ramdom pointers
+        it=head;
+        while(it){
+            Node* cloneNode=it->next;
+            cloneNode->random=it->random ? it->random->next : NULL;
+
+            it=it->next->next;
+        }
+
+        // detach A' from A
+        it=head;
+        Node* cloneHead=it->next;
+        while(it){
+            Node* cloneNode=it->next;
+            it->next=it->next->next;
+            if(cloneNode->next){
+                cloneNode->next=cloneNode->next->next;
+            }
+            it=it->next;
+        }
+        return cloneHead;
+    }
+};
+
+// time complexity: O(n)
