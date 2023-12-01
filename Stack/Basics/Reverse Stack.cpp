@@ -36,6 +36,40 @@ void reverStack(stack<int>&st){
   insertAtBottom(st,temp);
 }
 
+void insertSorted(stack<int>& st,int ele){
+    //base case
+    if(st.empty() || ele>st.top()){
+        st.push(ele);
+        return;
+    }
+
+    // 1case 
+    int temp=st.top();
+    st.pop();
+
+    //recursion
+    insertSorted(st,ele);
+
+    //backtrack
+    st.push(temp);
+}
+
+void sortStack(stack<int>&st){
+  // base casre
+  if(st.empty()){
+    return;
+  }
+
+  // 1 case
+  int temp=st.top();
+  st.pop();
+
+  //recursion
+  sortStack(st);
+
+  //backtrack
+  insertSorted(st,temp);
+}
 int main() {
   stack<int>st;
 
@@ -46,6 +80,8 @@ int main() {
   st.push(50);
   int ele=1000;
   // insertAtBottom(st,ele);
+
+  sortStack(st);
 
   reverStack(st);
   while(!st.empty()){
