@@ -55,6 +55,7 @@ void insertSorted(stack<int>& st,int ele){
 }
 
 void sortStack(stack<int>&st){
+
   // base casre
   if(st.empty()){
     return;
@@ -70,6 +71,8 @@ void sortStack(stack<int>&st){
   //backtrack
   insertSorted(st,temp);
 }
+
+
 int main() {
   stack<int>st;
 
