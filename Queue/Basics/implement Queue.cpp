@@ -50,7 +50,10 @@ class Queue{
     }
 
     int getSize(){
-      return rear-front+1;
+        if(front==-1 && rear==-1){
+            return 0;
+        }
+        return rear-front+1;
     }
 
     int getFront(){
