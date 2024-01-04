@@ -37,3 +37,35 @@ public:
     }
 };
 
+// fast method
+class Solution {
+public:
+    bool isbalanced=true;
+    int height(TreeNode* root){
+        if(root==NULL){
+            return 0;
+        }
+
+        int leftHeight=height(root->left);
+        int rightHeight=height(root->right);
+
+        if(isbalanced && (abs(leftHeight-rightHeight)>1)){
+            isbalanced=false;
+        }
+
+        int height=max(leftHeight,rightHeight)+1;
+
+        return height;
+    }
+    bool isBalanced(TreeNode* root) {
+        if(!root){
+            return true;
+        }
+        int lh=height(root->left);
+        int rh=height(root->right);
+        if(isbalanced && (abs(lh-rh)>1)){
+            isbalanced=false;
+        }
+        return isbalanced;
+    }
+};
