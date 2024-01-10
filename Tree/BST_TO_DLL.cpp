@@ -90,69 +90,16 @@ void printDLL(Node* head){
     }
 }
 
-Node* maxValue(Node*&root){
-    if(!root) return NULL;
-    Node* temp=root;
-    while(temp->right){
-        temp=temp->right;
-    }
 
-    return temp;
-}
-
-Node* minValue(Node*&root){
-    if(!root) return NULL;
-    Node* temp=root;
-    while(temp->left){
-        temp=temp->left;
-    }
-
-    return temp;
-}
-
-bool search(Node*& root,int target){
-    if(!root) return false;
-
-    if(root->data==target) return true;
-
-    bool leftAns=false;
-    bool rightAns=false;
-
-    if(target<root->data){
-        leftAns=search(root->left,target);
-    }
-
-    if(target>root->data){
-        rightAns=search(root->right,target);
-    }
-
-    return leftAns || rightAns;
-}
 int main(){
     Node* root=NULL;
     helper(root);
-    // levelOrderTraversal(root);
+    levelOrderTraversal(root);
 
-    // Node* head=NULL;
-    // BST_TO_DLL(root,head);
-    // cout<<"output: ";
-    // printDLL(head);
-
-    // cout<<endl<<"Max value: "<<maxValue(root)->data;
-    // cout<<endl<<"Min value: "<<minValue(root)->data;
-
-    int target;
-    cout<<"Enter target: "<<endl;
-    cin>>target;
-    while(target!=-1){
-        bool ans=search(root,target);
-        if(ans)
-            cout<<"Found"<<endl;
-        else 
-            cout<<"Not Found"<<endl;
-        cout<<"Enter next target: "<<endl;
-        cin>>target;
-    }
+    Node* head=NULL;
+    BST_TO_DLL(root,head);
+    cout<<"output: ";
+    printDLL(head);
     return 0;
 }
 
