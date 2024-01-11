@@ -128,10 +128,48 @@ bool search(Node*& root,int target){
 
     return leftAns || rightAns;
 }
+
+Node* deleteBST(Node* root,int target){
+    if(!root) return NULL;
+
+    if(root->data==target){
+        if(!root->left && !root->right){
+            // leaf node;
+            delete root;
+            return NULL;
+        }else if(root->left && !root->right){
+            // only left child exist
+            Node* temp=root->left; // left child ko store kara liya
+            delete root; // root ko delete kara diya
+            return temp; // left child ko return kara diya
+        }else if(!root->left&&root->right){
+            // only right exist 
+            Node* temp=root->right;
+            delete root;
+            return temp;
+        }else{
+            // both child exist
+            
+            // either find maxValue from left or find minValue from right
+            Node* maxi=maxValue(root->left);
+            // replace root->data with maxi->data
+            root->data=maxi->data;
+            // delete maxi
+            root->left=deleteBST(root->left,maxi->data); // root->left ma se maxi->data ko delete kara do
+            return root;
+        }
+    }else if(target<root->data){
+        root->left=deleteBST(root->left,target);
+    }else if(target>root->data){
+        root->right=deleteBST(root->right,target);
+    }
+    return root;
+}
 int main(){
     Node* root=NULL;
     helper(root);
-    // levelOrderTraversal(root);
+    levelOrderTraversal(root);
+    cout<<endl;
 
     // Node* head=NULL;
     // BST_TO_DLL(root,head);
@@ -144,12 +182,19 @@ int main(){
     int target;
     cout<<"Enter target: "<<endl;
     cin>>target;
+    // while(target!=-1){
+    //     bool ans=search(root,target);
+    //     if(ans)
+    //         cout<<"Found"<<endl;
+    //     else 
+    //         cout<<"Not Found"<<endl;
+    //     cout<<"Enter next target: "<<endl;
+    //     cin>>target;
+    // }
+
     while(target!=-1){
-        bool ans=search(root,target);
-        if(ans)
-            cout<<"Found"<<endl;
-        else 
-            cout<<"Not Found"<<endl;
+        root=deleteBST(root,target);
+        levelOrderTraversal(root);
         cout<<"Enter next target: "<<endl;
         cin>>target;
     }
