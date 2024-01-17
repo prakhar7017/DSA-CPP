@@ -62,3 +62,18 @@ class Solution:
         return True
 
         
+
+//************************************TypeScript Solution***********************
+function uniqueOccurrences(arr: number[]): boolean {
+    const v:number[]=new Array(2001).fill(0);
+    for(let num of arr){
+        v[num+1000]++;
+    }
+
+    v.sort((a,b)=>a-b);
+
+    for(let i=1;i<2001;i++){
+        if(v[i]!=0 && v[i]==v[i-1]) return false;
+    }
+    return true;
+};
