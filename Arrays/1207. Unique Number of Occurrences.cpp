@@ -44,3 +44,21 @@ public:
 //     if(arr[i])==1000 and by this  v[arr[i]+1000]++;  we are adding 1000 to 1000 so the result will be 2000 . we will use this 2000 as a index in v vector;
 
 // thes index will corresponds to actual numbers and we can track frequency of each number in this way.
+
+
+
+//****************************Python Solution************************
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        v=[0]*2001
+        for num in arr:
+            v[num+1000]+=1
+
+        v.sort()
+        for i in range(1,2001):
+            if(v[i]!=0 and v[i]==v[i-1]): 
+                return False
+        
+        return True
+
+        
