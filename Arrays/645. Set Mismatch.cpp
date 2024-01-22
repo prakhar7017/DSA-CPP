@@ -43,6 +43,27 @@ class Solution:
         
         return ans
 
+//*****************************TypeScript Code**********************************
+function findErrorNums(nums: number[]): number[] {
+    const n:number=nums.length;
+    let i:number=0;
+    while(i<n){
+        let index:number=nums[i]-1;
+        if(nums[i]!=nums[index]){
+            [nums[i],nums[index]]=[nums[index],nums[i]];
+        }else{
+            ++i;
+        }
+    }
+    let ans:number[]=new Array();
+    for(let i=0;i<n;i++){
+        if(nums[i]!=i+1){
+            ans.push(nums[i]);
+            ans.push(i+1);
+        }
+    }
+    return ans;
+};
 
 
         
