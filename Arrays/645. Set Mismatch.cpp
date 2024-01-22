@@ -23,3 +23,26 @@ public:
     }
 };
 
+
+//*******************************PYTHON CODE************************************
+class Solution:
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        i=0
+        n=len(nums)
+        while(i<n):
+            index=nums[i]-1
+            if(nums[i]!=nums[index]):
+                nums[i],nums[index]=nums[index],nums[i]
+            else:
+                i=i+1
+        ans = []
+        for i in range(n):
+            if nums[i] != i + 1:
+                ans.append(nums[i])
+                ans.append(i + 1)
+        
+        return ans
+
+
+
+        
