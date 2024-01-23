@@ -117,7 +117,7 @@ function solve(arr: string[], temp: string, i: number, n: number): number {
     let exclude: number = 0;
 
     if (mp.has(temp)) {
-        return mp.get(temp)!; // Use '!' to assert that the value is not null or undefined
+        return mp.get(temp)!;
     }
 
     if (isDuplicate(arr[i], temp)) {
