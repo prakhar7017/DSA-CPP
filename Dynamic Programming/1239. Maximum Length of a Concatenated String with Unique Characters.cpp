@@ -85,3 +85,56 @@ class Solution:
         n = len(arr)
         index = 0
         return Solution.solve(arr, temp, index, n)
+
+
+//*******************TypeScript Code*****************************
+let mp: Map<string, number> = new Map();
+
+function isDuplicate(s1: string, s2: string) {
+    let arr: number[] = new Array(26).fill(0);
+
+    for (let ch of s1) {
+        if (arr[ch.charCodeAt(0) - 'a'.charCodeAt(0)] > 0) {
+            return true;
+        }
+        arr[ch.charCodeAt(0) - 'a'.charCodeAt(0)]++;
+    }
+
+    for (let ch of s2) {
+        if (arr[ch.charCodeAt(0) - 'a'.charCodeAt(0)] > 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function solve(arr: string[], temp: string, i: number, n: number): number {
+    // base case
+    if (i >= n) return temp.length;
+
+    let include: number = 0;
+    let exclude: number = 0;
+
+    if (mp.has(temp)) {
+        return mp.get(temp)!; // Use '!' to assert that the value is not null or undefined
+    }
+
+    if (isDuplicate(arr[i], temp)) {
+        exclude = solve(arr, temp, i + 1, n);
+    } else {
+        include = solve(arr, temp + arr[i], i + 1, n);
+        exclude = solve(arr, temp, i + 1, n);
+    }
+
+    mp.set(temp, Math.max(include, exclude));
+    return mp.get(temp)!;
+}
+
+function maxLength(arr: string[]): number {
+    let n: number = arr.length;
+    let index: number = 0;
+    let temp: string = "";
+    mp.clear();
+    return solve(arr, temp, index, n);
+}
