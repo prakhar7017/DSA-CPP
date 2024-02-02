@@ -24,3 +24,25 @@ public:
 
 // time complexity o(n);
 // space complexity o(n);
+
+
+//************************Python Solution************************
+class Solution:
+    def sequentialDigits(self, low: int, high: int) -> List[int]:
+        q=deque()
+        ans=[]
+        for i in range(1,9):
+            q.append(i)
+
+        while q:
+            front =q.popleft()
+            if front >= low and front <= high:
+                ans.append(front)
+            last_digit = front % 10
+            if (last_digit + 1) <= 9:
+                new_number = (front * 10) + (last_digit + 1)
+                q.append(new_number)
+                
+        return ans
+// time complexity o(n);
+// space complexity o(n);
