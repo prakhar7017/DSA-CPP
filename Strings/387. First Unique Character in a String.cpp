@@ -18,6 +18,31 @@ public:
     }
 };
 
+// using queue 
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        vector<int>freq(26);
+        queue<int>q;
+        int n=s.length();
+        for(int i=0;i<n;i++){
+            char ch=s[i];
+            freq[ch-'a']++;
+            q.push(i);
+        }
+
+        while(!q.empty()){
+            int front=q.front();
+            q.pop();
+            if(freq[s[front]-'a']==1){
+                return front;
+            }
+        }
+
+        return -1;
+    }
+};
+
 //******************************Python Solution********************************
 class Solution:
     def firstUniqChar(self, s: str) -> int:
@@ -36,3 +61,4 @@ class Solution:
         
 // Time Complexity: O(n)
 // Space Complexity: O(1)
+
