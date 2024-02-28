@@ -5,7 +5,7 @@ public:
         if(i>=sat.size()){
             return 0;
         }
-        if(dp[i][time]!=-1){
+        if(dp[i][time]!=-1){ 
             dp[i][time];
         }
         int ans=INT_MIN;
