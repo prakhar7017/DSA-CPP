@@ -58,9 +58,22 @@ class Graph{
       }
 
     }
+
+
+    // dfs -> Depth First Search
+      void dfs(T src,unordered_map<T,bool>&vis){
+      vis[src]=true;
+      cout<<src<<" ";
+      for(auto nbr:adjList[src]){
+        if(!vis[nbr]){
+          dfs(nbr,vis);
+        }
+      }
+    }
 };
 
 int main() {
+  // bfs
   Graph<char>g;
   g.addEdge('a','b',0);
   g.addEdge('a','b',0);
@@ -71,5 +84,19 @@ int main() {
   g.addEdge('e','f',0);
 
   g.bfs('a');
+
+
+
+  // dfs
+   Graph<int>g;
+  g.addEdge(0,4,0);
+  g.addEdge(4,2,0);
+  g.addEdge(2,3,0);
+  g.addEdge(3,5,0);
+  g.addEdge(5,1,0);
+  g.addEdge(1,4,0);
+
+  unordered_map<int,bool>vis;
+  g.dfs(0,vis);
   return 0;
 }
