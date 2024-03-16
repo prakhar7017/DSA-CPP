@@ -1,6 +1,3 @@
-
-
-
 vector<vector<string>> findSequences(string beginWord, string endWord, vector<string>& wordList) {
     vector<vector<string>> ans;
     queue<pair<vector<string>, int>> q;
