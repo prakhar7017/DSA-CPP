@@ -48,3 +48,70 @@ public:
 };
 
 // time complexity:O(n)
+
+
+
+//-----------------------------------------------------------------------------------
+// using stack 
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        stack<ListNode*> st;
+        
+        ListNode* curr = head;
+        while(curr) {
+            st.push(curr);
+            curr = curr->next;
+        }
+        
+        int k = st.size()/2;
+        curr = head;
+        while(k--) {
+            ListNode* topNode = st.top();
+            st.pop();
+            
+            ListNode* temp = curr->next;
+            curr->next = topNode;
+            topNode->next = temp;
+            curr = temp;
+        }
+        
+        curr->next = NULL;
+    }
+};
+
+// time complexity o(n)
+// space complixity o(n)
+
+
+//------------------------------------------------------------------------------------
+// using recursion stack
+class Solution {
+public:
+    ListNode* curr;
+    
+    void solve(ListNode* head) {
+        if(!head) {
+            return;
+        }
+        
+        solve(head->next);
+        ListNode* tempn = curr->next;
+        if(tempn == NULL) {
+            return;
+        } else if(head == curr) {
+            head->next = NULL;
+            return;
+        }
+        
+        curr->next = head;
+        head->next = tempn == head ? NULL : tempn;
+        
+        curr = tempn;
+    }
+    
+    void reorderList(ListNode* head) {
+        curr = head;
+        solve(head);
+    }
+};
