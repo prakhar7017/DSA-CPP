@@ -18,4 +18,4 @@ class Solution {
 // time complexity : o(h)
 // space complexity : o(1)
 
-// link: https://www.geeksforgeeks.org/problems/minimum-element-in-bst/1
+link: https://www.geeksforgeeks.org/problems/minimum-element-in-bst/1
