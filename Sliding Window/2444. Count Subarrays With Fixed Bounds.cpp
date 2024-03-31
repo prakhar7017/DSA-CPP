@@ -38,3 +38,5 @@ public:
 
 time complexity:O(n)
 space complexity:O(1)
+
+// link : https://leetcode.com/problems/count-subarrays-with-fixed-bounds/description/?envType=daily-question&envId=2024-03-31
