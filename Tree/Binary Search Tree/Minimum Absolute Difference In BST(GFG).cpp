@@ -30,3 +30,29 @@ class Solution
 
 // time complexity : o(n)
 // space complexity :o(1)
+
+
+//-------------------------------------------------------------------------------
+class Solution {
+public:
+    void inOrder(TreeNode* root,vector<int>&temp){
+        if(!root) return;
+        inOrder(root->left,temp);
+        temp.push_back(root->val);
+        inOrder(root->right,temp);
+    }
+    int getMinimumDifference(TreeNode* root) {
+        vector<int>temp;
+        int minDiff=INT_MAX;
+        inOrder(root,temp);
+        for(int i=1;i<temp.size();i++){
+            minDiff=min(minDiff,temp[i]-temp[i-1]);
+        }
+        return minDiff;
+    }
+};
+
+time complexity: o(n)
+space complexity : o(n);
+
+// link : https://www.geeksforgeeks.org/problems/minimum-absolute-difference-in-bst-1665139652/1
