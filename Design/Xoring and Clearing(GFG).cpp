@@ -54,3 +54,6 @@ sizeof(arr[0]) gives the size of one element in the array. Let's say sizeof(arr[
 memset then fills the memory block pointed to by arr with 0 for 40 bytes, effectively initializing the array arr with zeros.
 
 */
+
+// link : https://www.geeksforgeeks.org/problems/xoring-and-clearing/1
+
