@@ -14,11 +14,11 @@ public:
     void solve(TreeNode* root,int sum,int &finalSum){
         if(!root) return ;
 
-        sum=sum*10+root->val;
         if(!root->left && !root->right){
-            finalSum+=sum;
+            finalSum+=sum*10+root->val;
             return;
         }
+        sum=sum*10+root->val;
         solve(root->left,sum,finalSum);
         solve(root->right,sum,finalSum);
         return;
