@@ -32,7 +32,7 @@ public:
                 nums[mainIndex++]=left[leftIndex++];
             }else{
                 nums[mainIndex++]=right[rightIndex++];
-                c+=lenLeft-leftIndex;
+                c+=lenLeft-leftIndex; // this is the main part of the code which is counting the pairs
             }
         }
 
