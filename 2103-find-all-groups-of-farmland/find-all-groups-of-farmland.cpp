@@ -53,6 +53,8 @@ public:
         }
     }
 
+
+
     vector<vector<int>> findFarmland(vector<vector<int>>& land) {
         rows=land.size();
         cols=land[0].size();
@@ -60,14 +62,27 @@ public:
 
         for(int row=0;row<rows;row++){
             for(int col=0;col<cols;col++){
-                if(land[row][col]==1){
-                    int r1=row; // starting row
-                    int c1=col; // starting col
-                    int r2=row; // potential last row
-                    int c2=col; // potential last col
+                if(land[row][col]==0) continue;
 
-                    bfs(land,r1,c1,r2,c2);
-                    ans.push_back({r1,c1,r2,c2});
+                // i am here when land[row][col]==1
+                int c2=col;
+                while(c2<cols && land[row][c2]==1){
+                    ++c2;
+                }
+
+                int r2=row;
+                while(r2<rows && land[r2][col]==1){
+                    ++r2;
+                }
+                r2 = r2==0 ? r2 : r2-1;
+                c2 = c2==0 ? c2 : c2-1;   
+
+                ans.push_back({row,col,r2,c2});
+
+                for(int i=row;i<=r2;i++){
+                    for(int j=col;j<=c2;j++){
+                        land[i][j]=0;
+                    }
                 }
             }
         }
