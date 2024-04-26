@@ -89,6 +89,60 @@ public:
         }
         return dp[0][firstSmallestCol];
     }
+
+
+    int solveUsingSpaceOptmised(vector<vector<int>>& grid){
+        int firstSmallestCol=-1;
+        int secondSmallestCol=-1;
+        int firstSmallestColVal=-1;
+        int secondSmallestColVal=-1;
+        // setting up initial state, filling last row and calculating firstSmallestCol ,secondSmallesCol
+        for(int col=0;col<cols;col++){
+            if(firstSmallestCol==-1 ||  grid[rows-1][col]<=firstSmallestColVal){ // updation of firstSmallestCol
+                secondSmallestCol=firstSmallestCol;
+                secondSmallestColVal=firstSmallestColVal;
+
+                firstSmallestCol=col;
+                firstSmallestColVal=grid[rows-1][col];
+            } else if(secondSmallestCol==-1 || grid[rows-1][col]<=secondSmallestColVal){ // updation of secondSmallesCol
+                secondSmallestCol=col;
+                secondSmallestColVal=grid[rows-1][col];
+            }
+        }
+
+        // moving in reverse dir
+        // from n-2 row to 0 row.
+        for(int row=rows-2;row>=0;row--){ 
+            int minCol1=-1;
+            int minCol2=-1;
+
+            int minCol1Val=-1;
+            int minCol2Val=-1;
+            for(int col=0;col<cols;col++){ // current col
+                int ans=INT_MAX;
+                if(col!=firstSmallestCol){
+                    ans=grid[row][col]+firstSmallestColVal;
+                }else{
+                    ans=grid[row][col]+secondSmallestColVal;
+                }
+
+                if(minCol1==-1 || ans<=minCol1Val){
+                    minCol2=minCol1;
+                    minCol2Val=minCol1Val;
+                    minCol1=col;
+                    minCol1Val=ans;
+                }else if(minCol2==-1 || ans<=minCol2Val){
+                    minCol2=col;
+                    minCol2Val=ans;
+                }
+            }
+            firstSmallestCol=minCol1;
+            firstSmallestColVal=minCol1Val;
+            secondSmallestCol=minCol2;
+            secondSmallestColVal=minCol2Val;
+        }
+        return firstSmallestColVal;
+    }
     int minFallingPathSum(vector<vector<int>>& grid) {
         rows=grid.size();
         cols=grid[0].size();
@@ -97,7 +151,7 @@ public:
         // for(int col=0;col<cols;col++){
         //     result=min(result,solveUsingMemo(0,col,grid,dp));
         // }
-        result=solveUsingTabOptimised(grid);
+        result=solveUsingSpaceOptmised(grid);
         return result;
     }
 };
