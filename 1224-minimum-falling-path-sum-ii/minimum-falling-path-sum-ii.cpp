@@ -19,14 +19,43 @@ public:
 
         return dp[row][col]=grid[row][col]+ans; // current[row][col] + neche ki rows ka min ans
     }
+
+    int solveUsingTab(vector<vector<int>>& grid){
+        vector<vector<int>>dp(rows+1,vector<int>(cols+1,INT_MAX));
+
+        // setting up initial state, filling last row
+        for(int col=0;col<cols;col++){
+            dp[rows-1][col]=grid[rows-1][col];
+        }
+
+        // moving in reverse dir
+        // from n-2 row to 0 row.
+        for(int row=rows-2;row>=0;row--){ 
+            for(int col=0;col<cols;col++){ // current col
+                int ans=INT_MAX;
+                for(int nextCol=0;nextCol<cols;nextCol++){ // next col , below of col
+                    if(nextCol!=col){
+                        ans=min(ans,dp[row+1][nextCol]);
+                    }
+                }
+                dp[row][col]=grid[row][col]+ans; // current[row][col] + neche a min ans;
+            }
+        }
+        int result=INT_MAX;
+        for(int col=0;col<cols;col++){
+            result=min(result,dp[0][col]);
+        }
+        return result;
+    }
     int minFallingPathSum(vector<vector<int>>& grid) {
         rows=grid.size();
         cols=grid[0].size();
         int result=INT_MAX;
-        vector<vector<int>>dp(rows+1,vector<int>(cols+1,-1));
-        for(int col=0;col<cols;col++){
-            result=min(result,solveUsingMemo(0,col,grid,dp));
-        }
+        // vector<vector<int>>dp(rows+1,vector<int>(cols+1,-1));
+        // for(int col=0;col<cols;col++){
+        //     result=min(result,solveUsingMemo(0,col,grid,dp));
+        // }
+        result=solveUsingTab(grid);
         return result;
     }
 };
