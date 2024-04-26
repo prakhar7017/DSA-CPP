@@ -1,5 +1,6 @@
 class Solution {
 public:
+//---------------------------------------------------------------------------------
     int rows;
     int cols;
     int solveUsingMemo(int row,int col,vector<vector<int>>& grid,vector<vector<int>>& dp){
@@ -19,6 +20,11 @@ public:
 
         return dp[row][col]=grid[row][col]+ans; // current[row][col] + neche ki rows ka min ans
     }
+
+    // time complexity : O(n*m*m)
+    // space complexity : O(n*m)
+
+//--------------------------------------------------------------------------------
 
     int solveUsingTab(vector<vector<int>>& grid){
         vector<vector<int>>dp(rows+1,vector<int>(cols+1,INT_MAX));
@@ -47,6 +53,11 @@ public:
         }
         return result;
     }
+
+    // time complexity : O(n*m*m)
+    // space complexity : O(n*m)
+
+//--------------------------------------------------------------------------------
 
     int solveUsingTabOptimised(vector<vector<int>>& grid){
         vector<vector<int>>dp(rows+1,vector<int>(cols+1,INT_MAX));
@@ -89,6 +100,10 @@ public:
         }
         return dp[0][firstSmallestCol];
     }
+
+    // time complexity : O(n*m)
+    // space complexity : O(n*m)
+//--------------------------------------------------------------------------------
 
 
     int solveUsingSpaceOptmised(vector<vector<int>>& grid){
@@ -143,6 +158,11 @@ public:
         }
         return firstSmallestColVal;
     }
+
+    // time complexity : O(n*m)
+    // space complexity : O(1)
+
+//--------------------------------------------------------------------------------
     int minFallingPathSum(vector<vector<int>>& grid) {
         rows=grid.size();
         cols=grid[0].size();
