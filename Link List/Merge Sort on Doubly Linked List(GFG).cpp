@@ -65,7 +65,7 @@ public:
 
         Node *mergedList = dummy->next; // merged list
         delete dummy;
-        
+
         return mergedList;
     }
 
@@ -95,8 +95,8 @@ public:
         }
 
         // Set the prev pointer of the head and the next pointer of the tail to nullptr
-        mergedList->prev = nullptr; 
-        tail->next = nullptr;
+        mergedList->prev = nullptr;  // yeh step yaad rakhna ma bhul jata hu
+        tail->next = nullptr; // yeh step yaad rakhna ma bhul jata hu
 
         return mergedList;
     }
