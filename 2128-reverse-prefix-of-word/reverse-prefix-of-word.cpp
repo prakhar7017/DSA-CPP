@@ -15,8 +15,16 @@ public:
         return word;
     }
     string reversePrefix(string word, char ch) {
-        int idx=findIndex(word,ch);
+        // int idx=findIndex(word,ch);
+        // if(idx==-1) return word;
+        // return reverseString(word,0,idx);
+        auto found=find(begin(word),end(word),ch);
+        int idx=-1;
+        if(found!=word.end()){
+            idx=found-word.begin();
+        }
         if(idx==-1) return word;
-        return reverseString(word,0,idx);
+        reverse(word.begin(),word.begin()+idx+1);
+        return word;
     }
 };
