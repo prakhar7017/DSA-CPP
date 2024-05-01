@@ -45,7 +45,6 @@ class Solution
         int e=A.size()-1;
         return buildTree(A,s,e);
     }
-
 };
 
 // time complexity of serialize: O(n)

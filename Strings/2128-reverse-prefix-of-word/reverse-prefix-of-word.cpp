@@ -15,9 +15,15 @@ public:
         return word;
     }
     string reversePrefix(string word, char ch) {
-        // int idx=findIndex(word,ch);
-        // if(idx==-1) return word;
-        // return reverseString(word,0,idx);
+        int idx=findIndex(word,ch);
+        if(idx==-1) return word;
+        return reverseString(word,0,idx);
+    }
+};
+
+//-------------------------------------------------------------------------
+// using stl functions
+ string reversePrefix(string word, char ch) {
         auto found=find(begin(word),end(word),ch);
         int idx=-1;
         if(found!=word.end()){
@@ -27,4 +33,7 @@ public:
         reverse(word.begin(),word.begin()+idx+1);
         return word;
     }
-};
+
+
+time complexity: O(n)
+space complexity: O(1)
