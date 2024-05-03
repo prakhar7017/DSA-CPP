@@ -1,11 +1,11 @@
 class Solution {
 public:
     vector<string> getVersionSepratedByDot(string &version){
-        stringstream ss(version);
-        string token="";
+        stringstream ss(version); // Used for breaking word
+        string token=""; // use to store each word
         vector<string>versions;
-        while(getline(ss,token,'.')){
-            versions.push_back(token);
+        while(getline(ss,token,'.')){ // Tokenize the string on the basis of '.'
+            versions.push_back(token); // Store the token in the vector
         }
         return versions;
     }
@@ -50,3 +50,6 @@ public:
 
     }
 };
+
+// time complexity: O(n)
+// space complexity: 0(n)
