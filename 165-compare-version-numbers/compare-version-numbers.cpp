@@ -9,9 +9,28 @@ public:
         }
         return versions;
     }
+    vector<string> breakingByDot(string &version){
+        vector<string> versions;
+        string token="";
+        char deli='.';
+        for(char s:version){
+            cout<<"s "<<s<<endl;
+            if(s!=deli){
+                token+=s;
+            }else{
+                versions.push_back(token);
+                token.clear();
+            }
+        }
+        if(token.length()!=0){
+            versions.push_back(token);
+        }
+        return versions;
+    }
     int compareVersion(string version1, string version2) {
-        vector<string>versions1=getVersionSepratedByDot(version1);
-        vector<string>versions2=getVersionSepratedByDot(version2);
+        vector<string>versions1=breakingByDot(version1);
+
+        vector<string>versions2=breakingByDot(version2);
         int i=0;
         int j=0;
         while(i<versions1.size() || j<versions2.size()){
