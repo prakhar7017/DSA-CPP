@@ -10,18 +10,34 @@
  */
 class Solution {
 public:
+    ListNode* reverse(ListNode* head){
+        ListNode* curr=head;
+        ListNode* prev=nullptr;
+        while(curr){
+            ListNode* nextNode=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=nextNode;
+        }
+        return prev;
+    }
     ListNode* removeNodes(ListNode* head) {
-        if(!head || !head->next){
-            return head;
+        head=reverse(head);
+        int maxV=INT_MIN;
+        ListNode* prev=nullptr;
+        ListNode* curr=head;
+        while(curr!=nullptr){
+            maxV=max(maxV,curr->val);
+            if(curr->val<maxV){
+                prev->next=curr->next;
+                ListNode* temp=curr;
+                curr=curr->next;
+                delete temp;
+            }else{
+                prev=curr;
+                curr=curr->next;
+            }
         }
-        ListNode* nextNode=removeNodes(head->next);
-
-        if(head->val<nextNode->val){
-            delete head;
-            return nextNode;
-        }
-        head->next=nextNode;
-        return head;
-
+        return reverse(head);
     }
 };
