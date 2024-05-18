@@ -30,3 +30,6 @@ public:
         return moves;
     }
 };
+
+// time complexity is O(n)
+// space complexity is O(n)
