@@ -1,16 +1,24 @@
 class Solution {
 public:
     vector<int> singleNumber(vector<int>& nums) {
-        unordered_map<int,int>mp;
+        long long XOR = 0;
         for(int num:nums){
-            mp[num]++;
+            XOR^=num;
         }
-        vector<int>ans;
-        for(auto it:mp){
-            if(it.second==1){
-                ans.push_back(it.first);
+
+        int mask=(XOR)&(-XOR);
+
+        int groupA=0;
+        int groupB=0;
+
+        for(int num:nums){
+            if(num&mask){
+                groupA^=num;
+            }else{
+                groupB^=num;
             }
         }
-        return ans;
+
+        return {groupA,groupB};
     }
 };
