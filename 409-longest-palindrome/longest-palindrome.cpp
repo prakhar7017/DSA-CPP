@@ -1,29 +1,24 @@
 class Solution {
 public:
-    int longestPalindrome(const std::string& s) {
-        // Initialize a set to keep track of characters with odd frequencies
-        std::unordered_set<char> charSet;
-        // Initialize the length of the longest palindrome
-        int length = 0;
-        
-        // Iterate over each character in the string
-        for (char c : s) {
-            // If the character is already in the set, remove it and increase the length by 2
-            if (charSet.find(c) != charSet.end()) {
-                charSet.erase(c);
-                length += 2;
-            } else {
-                // If the character is not in the set, add it to the set
-                charSet.insert(c);
+    int longestPalindrome(string s) {
+        int n=s.length();
+        unordered_map<char,int>mp;
+        int oddFreq=0;
+
+        for(int i=0;i<n;i++){
+            char ch=s[i];
+            mp[ch]++;
+
+            if(mp[ch]&1){
+                ++oddFreq;
+            }else{
+                --oddFreq;
             }
         }
-        
-        // If there are any characters left in the set, add 1 to the length for the middle character
-        if (!charSet.empty()) {
-            length += 1;
+        if(oddFreq>0){
+            return n-oddFreq+1;
         }
-        
-        // Return the total length of the longest palindrome
-        return length;
+        return n;
     }
+
 };
