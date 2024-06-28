@@ -1,3 +1,5 @@
+
+// count the indegree of each node. the node haveing greates indegree will be assocaited with greatest value. similarly node with least indegree will have least value.
 class Solution {
 public:
     long long maximumImportance(int n, vector<vector<int>>& roads) {
