@@ -26,6 +26,20 @@ public:
 
         return topo;
     }
+    void solveUsingDFS(int course,stack<int>&st,vector<bool>&vis,vector<bool>&dfsCalls,unordered_map<int,list<int>>&adjList){
+        vis[course]=true;
+        dfsCalls[course]=true;
+        for(int &nbrCourse:adjList[course]){
+            if(dfsCalls[nbrCourse]==true){
+                return;
+            }
+            if(!vis[nbrCourse]){
+                solveUsingDFS(nbrCourse,st,vis,dfsCalls,adjList);
+            }
+        }
+        dfsCalls[course]=false;
+        st.push(course);
+    }
     vector<int> findOrder(int n, vector<vector<int>>& prerequisites) {
         vector<int>indegree(n,0);
         unordered_map<int,list<int>>adjList;
@@ -40,7 +54,17 @@ public:
             adjList[u].push_back(v);
         }
 
-        vector<int>topo=solveUsingKansAlgo(n,indegree,adjList);
+        // vector<int>topo=solveUsingKansAlgo(n,indegree,adjList);
+        for(int course=0;course<n;course++){
+            if(!vis[course]){
+                solveUsingDFS(course,st,vis,dfsCalls,adjList);
+            }
+        }
+        vector<int>topo;
+        while(!st.empty()){
+            topo.push_back(st.top());
+            st.pop();
+        }
 
         if(topo.size()==n){
             return topo;
