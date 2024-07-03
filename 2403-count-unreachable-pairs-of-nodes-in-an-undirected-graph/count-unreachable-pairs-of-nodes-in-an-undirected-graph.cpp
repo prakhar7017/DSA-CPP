@@ -10,11 +10,7 @@ public:
     }
 
     void unionSet(int u,int v,vector<int>&rank,vector<int>&parent){
-        // 1: write find and union
-        // 2: form connected components
-        // 3: count the size of each component
-        // 4: calculate the ans -> formulae size*(n-size)
-        // 5: n-size 
+        
         u=findParent(u,parent);
         v=findParent(v,parent);
 
@@ -28,6 +24,11 @@ public:
         }
     }
     long long countPairs(int n, vector<vector<int>>& edges) {
+        // 1: write find and union
+        // 2: form connected components
+        // 3: count the size of each component
+        // 4: calculate the ans -> formulae size*(n-size)
+        // 5: n-size 
         parent.resize(n);
         rank.resize(n,0);
 
