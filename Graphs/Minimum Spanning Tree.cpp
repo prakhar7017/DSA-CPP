@@ -63,3 +63,49 @@ class Solution
 
 // prims alogrithm can be implemented using min heap to reduce time complexity to O(E*log(V)) 
 // why it is used , it is used to find nodewhich has min value in O(1) time
+
+
+// Minimum Spanning Tree using Min heap 
+class Solution
+{
+	public:
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    typedef pair<int,int> P;
+    
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        vector<bool>inmst(V,false);
+        priority_queue<P,vector<P>,greater<P>>pq;
+        
+        pq.push({0,0});
+        int sum=0;
+        
+        while(!pq.empty()){
+            P topPair=pq.top();
+            pq.pop();
+            
+            int wt=topPair.first;
+            int node=topPair.second;
+            
+            if(inmst[node]==true) continue;
+            
+            sum+=wt;
+            
+            inmst[node]=true;
+            
+            for(vector<int>&nbr:adj[node]){
+                int nbrNode=nbr[0];
+                int nbrWt=nbr[1];
+                
+                if(inmst[nbrNode]==false){
+                    pq.push({nbrWt,nbrNode});
+                }
+            }
+        }
+        return sum;
+    }
+};
+
+
+// time complexity: O(E*log(V))
+// Auxiliary Space: O(V) where V is the number of vertex
