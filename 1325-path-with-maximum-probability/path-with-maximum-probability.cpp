@@ -2,13 +2,13 @@ class Solution {
 public:
     
     double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
-        vector<pair<int,double>> graph[n];  // node(u)--> {node(v),prob};
+        vector<pair<int,double>> graph[n];
         for(int i=0;i<edges.size();i++){
             graph[edges[i][0]].push_back({edges[i][1],succProb[i]});
             graph[edges[i][1]].push_back({edges[i][0],succProb[i]});
         }
  
-           vector<int> vis(n,0);
+          vector<int> vis(n,0);
           priority_queue<pair<double,int>> pq;
           vector<double> dist(n,0);
           pq.push({1.00,start});
@@ -30,9 +30,7 @@ public:
                         }
                    }
                }
-
            }
            return dist[end];
-
     }
 };
