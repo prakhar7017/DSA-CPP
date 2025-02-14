@@ -1,24 +1,31 @@
 class ProductOfNumbers {
     private:
     vector<int>st;
+    int n;
 public:
     ProductOfNumbers() {
-        
+        st.clear();
+        n=0;
     }
     
     void add(int num) {
-        st.push_back(num);
+        if(num==0){
+            st.clear();
+            n=0;
+        }else {
+            if(st.empty()){
+                st.push_back(num);
+            }else{
+                st.push_back(num*st[n-1]);
+            }
+            n++;
+        }
     }
     
     int getProduct(int k) {
-     int product=1;
-     int n=st.size();
-     if(n<2) return st[0];
-     int lastKthIndex=n-k;
-     for(int i=lastKthIndex;i<n;i++){
-        product=product*st[i];
-     }   
-     return product;
+        if(k>n) return 0;
+        else if(k==n) return st[n-1];
+        return st[n-1]/st[n-k-1];
     }
 };
 
