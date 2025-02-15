@@ -20,13 +20,35 @@ public:
         }
         return v[index][currSum]=possible;
     }
+    bool checkOPT(int sq,int currSum,int &target){
+        // basecase
+
+        if(sq==0) {
+            if(currSum==target) return true;
+            return false;
+        }
+
+        return checkOPT(sq/10,currSum+sq%10,target) ||
+               checkOPT(sq/100,currSum+sq%100,target) ||
+               checkOPT(sq/1000,currSum+sq%1000,target) ||
+               checkOPT(sq/10000,currSum+sq%10000,target);
+               
+
+    }
     int punishmentNumber(int n) {
         int punish=0;
+        // for(int num=1;num<=n;num++){
+        //     int sq=num*num;
+        //     string s=to_string(sq);
+        //     vector<vector<int>>v(s.length(),vector<int>(num+1,-1));
+        //     if(check(0,0,s,num,v)){
+        //         punish+=sq;
+        //     }
+        // }
+
         for(int num=1;num<=n;num++){
             int sq=num*num;
-            string s=to_string(sq);
-            vector<vector<int>>v(s.length(),vector<int>(num+1,-1));
-            if(check(0,0,s,num,v)){
+            if(checkOPT(sq,0,num)){
                 punish+=sq;
             }
         }
