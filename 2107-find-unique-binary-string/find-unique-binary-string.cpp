@@ -1,6 +1,7 @@
 class Solution {
 public:
-    string findDifferentBinaryString(vector<string>& nums) {
+
+    string app1(vector<string>& nums){
         unordered_set<int>st;
 
         for(string num:nums){
@@ -17,5 +18,18 @@ public:
         }
 
         return ans.substr(16-n);
+    }
+
+    string app2(vector<string>& nums){
+        int n=nums.size();
+        string ans="";
+        for(int i=0;i<n;i++){
+            char ch=nums[i][i];
+            ans+=(ch=='0') ? '1' : '0';
+        }
+        return ans;
+    }
+    string findDifferentBinaryString(vector<string>& nums) {
+        return app2(nums);
     }
 };
