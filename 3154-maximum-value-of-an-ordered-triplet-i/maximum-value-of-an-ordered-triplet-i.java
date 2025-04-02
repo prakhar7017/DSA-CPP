@@ -1,5 +1,5 @@
 class Solution {
-    public long maximumTripletValue(int[] nums) {
+    public long solve(int[] nums){
         int n=nums.length;
         int[] maxLefti= new int[n];
         int[] maxRightk=new int[n];
@@ -16,5 +16,8 @@ class Solution {
             ans=Math.max(ans, (long)(maxLefti[i] - nums[i]) * maxRightk[i]);
         }
         return ans;
+    }
+    public long maximumTripletValue(int[] nums) {
+        return solve(nums);
     }
 }
