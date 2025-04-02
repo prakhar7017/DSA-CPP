@@ -30,6 +30,8 @@ class Solution {
             maxi=Math.max(maxi,nums[k]);
         }
         return ans;
+        //T.C O(n)
+        // S.C O(1)
     }
     public long maximumTripletValue(int[] nums) {
         return solveOptimized(nums);
