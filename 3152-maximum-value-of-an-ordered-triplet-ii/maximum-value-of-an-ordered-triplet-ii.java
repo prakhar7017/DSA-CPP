@@ -19,7 +19,21 @@ class Solution {
         //T.C O(n)
         // S.C O(n)
     }
+    public long solveOptimized(int[] nums){
+        long n=nums.length;
+        long ans=0;
+        long maxDiff=0;
+        long maxi=0;
+        for(int k=0;k<n;k++){
+            ans=Math.max(ans,maxDiff*nums[k]);
+            maxDiff=Math.max(maxDiff,maxi-nums[k]);
+            maxi=Math.max(maxi,nums[k]);
+        }
+        return ans;
+        //T.C O(n)
+        // S.C O(1)
+    }
     public long maximumTripletValue(int[] nums) {
-        return solve(nums);
+        return solveOptimized(nums);
     }
 }
