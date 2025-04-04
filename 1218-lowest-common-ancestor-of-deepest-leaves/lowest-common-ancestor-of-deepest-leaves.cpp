@@ -11,6 +11,7 @@
  */
 class Solution {
 public:
+    typedef pair<int,TreeNode*>P; //{depth,node}
     unordered_map<int,int>mp;
     int maxD;
     void depth(TreeNode* root,int d){
@@ -34,9 +35,24 @@ public:
         // return nullptr;
         return leftAns!=NULL ? leftAns : rightAns;
     }
+    P onePassSolve(TreeNode* root){
+        if(root==NULL){
+            return {0,NULL};
+        }
+        P leftAns=onePassSolve(root->left);
+        P rightAns=onePassSolve(root->right);
+        
+        if(leftAns.first==rightAns.first){
+            return {leftAns.first+1,root};
+        }else if(leftAns.first > rightAns.first){
+            return {leftAns.first+1,leftAns.second};
+        }else {
+            return {rightAns.first+1,rightAns.second};
+        }
+    }
     TreeNode* lcaDeepestLeaves(TreeNode* root) {
-        depth(root,0);
-        return LCA(root);
+        // depth(root,0);
+        return onePassSolve(root).second;
 
     }
 };
