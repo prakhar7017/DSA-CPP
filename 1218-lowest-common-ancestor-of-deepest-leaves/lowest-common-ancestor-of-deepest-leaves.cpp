@@ -29,9 +29,10 @@ public:
         TreeNode* leftAns=LCA(root->left);
         TreeNode* rightAns=LCA(root->right);
         if(leftAns && rightAns) return root;
-        else if(!leftAns && rightAns) return rightAns;
-        else if(leftAns && !rightAns) return leftAns;
-        return nullptr;
+        // else if(!leftAns && rightAns) return rightAns;
+        // else if(leftAns && !rightAns) return leftAns;
+        // return nullptr;
+        return leftAns!=NULL ? leftAns : rightAns;
     }
     TreeNode* lcaDeepestLeaves(TreeNode* root) {
         depth(root,0);
