@@ -1,40 +1,32 @@
 class Solution {
 public:
-    int n;
-    void bfs(vector<vector<int>>& adj, int u, vector<bool>& visited) {
-        queue<int> que;
-        que.push(u);
-        visited[u] = true;
-        
-        
-        while(!que.empty()) {
-            int u = que.front();
-            que.pop();
-            
-            //Visit neighbours
-            for(int v = 0; v<n; v++) {
-                if(adj[u][v] == 1 && !visited[v]) {
-                    visited[v] = true;
-                    que.push(v);
+    int cities;
+    void solveUsingBFS(vector<vector<int>>& isConnected,int city,vector<bool>&vis){
+        queue<int>q;
+        vis[city]=true;
+        q.push(city);
+
+        while(!q.empty()){
+            int frontCity=q.front();
+            q.pop();
+            for(int neighbourCity=0;neighbourCity<cities;neighbourCity++){
+                if(isConnected[frontCity][neighbourCity]==1 && !vis[neighbourCity]){
+                    q.push(neighbourCity);
+                    vis[neighbourCity]=true;
                 }
-            } 
-        }
-    }
-    
-    int findCircleNum(vector<vector<int>>& isConnected) {
-        n = isConnected.size();
-        
-        vector<bool> visited(n, false);
-        int count = 0;
-        
-        for(int i = 0; i<n; i++) {
-            if(!visited[i]) {
-                bfs(isConnected, i, visited);
-                count++;
             }
         }
-        
-        return count;
-        
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        cities=isConnected.size();
+        vector<bool>vis(cities,false);
+        int provinces=0;
+        for(int city=0;city<cities;city++){
+            if(!vis[city]){
+                solveUsingBFS(isConnected,city,vis);
+                provinces++;
+            }
+        }
+        return provinces;
     }
 };
