@@ -1,19 +1,28 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        if(n==1)
-            return 1;
-        vector<int> ugly(n,1);
-        int a=0,b=0,c=0;
-        for(int i=1;i<n;i++){
-            ugly[i]=min(ugly[a]*2,min(ugly[b]*3,ugly[c]*5));
-            if(ugly[i] == ugly[a]*2)
-                a++;
-            if(ugly[i] == ugly[b]*3)
-                b++;
-            if(ugly[i] == ugly[c]*5)
-                c++;
+        vector<int>t(n+1);
+
+        t[1]=1;
+        int i2;
+        int i3;
+        int i5;
+
+        i2=i3=i5=1;
+
+        for(int i=2;i<=n;i++){
+            int i2_uglyNo=t[i2]*2;
+            int i3_uglyNo=t[i3]*3;
+            int i5_uglyNo=t[i5]*5;
+
+            t[i]=min({i2_uglyNo,i3_uglyNo,i5_uglyNo});
+
+            if(t[i]==i2_uglyNo) i2++;
+            if(t[i]==i3_uglyNo) i3++;
+            if(t[i]==i5_uglyNo) i5++;
         }
-        return ugly[n-1];
+
+        return t[n];
+
     }
 };
