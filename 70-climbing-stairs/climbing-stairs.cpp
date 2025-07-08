@@ -21,10 +21,21 @@ public:
         }
         return dp[n];
     }
+    int solveUsingSpaceOptimised(int n){
+        int prev1=1;
+        int prev2=1;
+        for(int i=2;i<=n;i++){
+            int curr=prev1+prev2;
+            prev2=prev1;
+            prev1=curr;
+        }
+        return prev1;
+    }
     int climbStairs(int n) {
         // return solveUsingRec(n);
         vector<int>dp(n+1,0);
         // return solveUsingDP(n,dp);
-        return solveUsingBottomUp(n);
+        // return solveUsingBottomUp(n);
+        return solveUsingSpaceOptimised(n);
     }
 };
