@@ -20,9 +20,23 @@ public:
         }
         return dp[0];
     }
+    int solveUsingSpace(vector<int>&nums){
+        int n=nums.size();
+        int prev=nums[n-1];
+        int next=0;
+        int curr;
+        for(int i=n-2;i>=0;i--){
+            int include=nums[i]+next;
+            int exclude=0+prev;
+            curr=max(include,exclude);
+            next=prev;
+            prev=curr;
+        }
+        return prev;
+    }
     int rob(vector<int>& nums) {
         vector<int>dp(nums.size()+1,-1);
         // return solve(0,nums,dp);
-        return solveUsingTab(nums);
+        return solveUsingSpace(nums);
     }
 };
