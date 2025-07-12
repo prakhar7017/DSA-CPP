@@ -11,6 +11,19 @@ public:
 
         return dp[index] = max(include, exclude);
     }
+    int solveUsingTab(int start,int end,vector<int>&nums){
+        int len=end-start+1;
+        if(len==0) return 0;
+        vector<int>dp(len+2,0);
+        dp[end]=nums[end];
+        for(int i=end-1;i>=start;i--){
+            int include=nums[i]+dp[i+2];
+            int exclude=0+dp[i+1];
+
+            dp[i]=max(include,exclude);
+        }
+        return dp[start];
+    }
     int rob(vector<int>& nums) {
         int n = nums.size();
         if (n == 1)
@@ -19,12 +32,10 @@ public:
             return max(nums[0], nums[1]);
 
         // Case 1: Rob from house 0 to n-2
-        vector<int> dp1(n, -1);
-        int take0thHouse = solve(0, n - 2, nums, dp1);
+        int take0thHouse = solveUsingTab(0,n-2,nums);
 
         // Case 2: Rob from house 1 to n-1
-        vector<int> dp2(n, -1);
-        int take1stHouse = solve(1, n - 1, nums, dp2);
+        int take1stHouse = solveUsingTab(1,n-1,nums);
 
         return max(take0thHouse, take1stHouse);
     }
