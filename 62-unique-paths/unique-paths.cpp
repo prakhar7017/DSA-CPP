@@ -30,9 +30,21 @@ public:
         }
         return grid[rows-1][cols-1];
     }
+    int solveUsingSpaceOptimised(int rows,int cols){
+        vector<int>prev(cols,1);
+        for(int row=1;row<rows;row++){
+            vector<int>curr(cols,1);
+            for(int col=1;col<cols;col++){
+                curr[col]=prev[col]+curr[col-1];
+            }
+            prev=curr;
+        }
+        return prev[cols-1];
+    }
     int uniquePaths(int m, int n) {
         // vector<vector<int>>grid(m,vector<int>(n,-1));
         // return solve(0,0,m,n,grid);
-        return solveUsingTab(m,n);
+        // return solveUsingTab(m,n);
+        return solveUsingSpaceOptimised(m,n);
     }
 };
