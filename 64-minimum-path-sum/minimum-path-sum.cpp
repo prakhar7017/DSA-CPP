@@ -38,9 +38,26 @@ public:
         }
         return dp[rows-1][cols-1];
     }
+    int solveUsingSpaceOp(vector<vector<int>>& grid){
+        int rows=grid.size();
+        int cols=grid[0].size();
+        vector<int>prev(cols+1,0);
+        prev[0]=grid[0][0];
+        for(int col=1;col<cols;col++) prev[col]=prev[col-1]+grid[0][col];
+        for(int row=1;row<rows;row++){
+            vector<int>curr(cols+1,0);
+            for(int col=0;col<cols;col++){
+                if(col==0) curr[0]=grid[row][col]+prev[col];
+                else curr[col]=grid[row][col]+min(prev[col],curr[col-1]);
+            }
+            prev=curr;
+        }
+        return prev[cols-1];
+    }
     int minPathSum(vector<vector<int>>& grid) { 
         // vector<vector<int>>dp(grid.size(),vector<int>(grid[0].size(),-1));
         // return solve(0, 0, grid,dp); 
-        return solveUsingTab(grid);
+        // return solveUsingTab(grid);
+        return solveUsingSpaceOp(grid);
     }
 };
