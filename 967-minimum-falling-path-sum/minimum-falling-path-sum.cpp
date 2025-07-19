@@ -43,9 +43,36 @@ public:
             }
         }
 
-        int ans=INT_MAX;
-        for(int col=0;col<cols;col++){
-            ans=min(ans,dp[0][col]);
+        int ans = INT_MAX;
+        for (int col = 0; col < cols; col++) {
+            ans = min(ans, dp[0][col]);
+        }
+        return ans;
+    }
+    int solveUsingSpaceOp(vector<vector<int>>& m) {
+        vector<int> prev(cols, 0);
+
+        for (int col = 0; col < cols; col++)
+            prev[col] = m[rows - 1][col];
+
+        for (int row = rows - 2; row >= 0; row--) {
+            vector<int> curr(cols, 0);
+            for (int col = 0; col < cols; col++) {
+                if (col == 0)
+                    curr[col] = m[row][col] + min(prev[col], prev[col + 1]);
+                else if (col == cols - 1)
+                    curr[col] = m[row][col] + min(prev[col - 1], prev[col]);
+                else
+                    curr[col] =
+                        m[row][col] +
+                        min(prev[col - 1], min(prev[col], prev[col + 1]));
+            }
+            prev=curr;
+        }
+
+        int ans = INT_MAX;
+        for (int col = 0; col < cols; col++) {
+            ans = min(ans, prev[col]);
         }
         return ans;
     }
@@ -58,6 +85,7 @@ public:
         //     minAns = min(minAns, solve(0, col, matrix, dp));
         // }
         // return minAns;
-        return solveUsingTab(matrix);
+        // return solveUsingTab(matrix);
+        return solveUsingSpaceOp(matrix);
     }
 };
