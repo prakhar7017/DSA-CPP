@@ -23,8 +23,24 @@ public:
 
         return dp[currX][currY]=min(goRight, goDown);
     }
+    int solveUsingTab(vector<vector<int>>& grid){
+        int rows=grid.size();
+        int cols=grid[0].size();
+        vector<vector<int>>dp(rows+1,vector<int>(cols+1,0));
+        dp[0][0]=grid[0][0];
+        for(int row=1;row<rows;row++) dp[row][0]=dp[row-1][0]+grid[row][0];
+        for(int col=1;col<cols;col++) dp[0][col]=dp[0][col-1]+grid[0][col];
+
+        for(int row=1;row<rows;row++){
+            for(int col=1;col<cols;col++){
+                dp[row][col]=grid[row][col]+min(dp[row-1][col],dp[row][col-1]);
+            }
+        }
+        return dp[rows-1][cols-1];
+    }
     int minPathSum(vector<vector<int>>& grid) { 
-        vector<vector<int>>dp(grid.size(),vector<int>(grid[0].size(),-1));
-        return solve(0, 0, grid,dp); 
+        // vector<vector<int>>dp(grid.size(),vector<int>(grid[0].size(),-1));
+        // return solve(0, 0, grid,dp); 
+        return solveUsingTab(grid);
     }
 };
