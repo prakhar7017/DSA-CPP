@@ -31,11 +31,25 @@ public:
         }
         return dp[0][0];
     }
+    int solveUsingSpaceOp(vector<vector<int>>& t){
+        vector<int>prev(t[rows-1].size(),0);
+        for(int col=0;col<t[rows-1].size();col++) prev[col]=t[rows-1][col];
+
+        for(int row=rows-2;row>=0;row--){
+            vector<int>curr(t[row].size(),0);
+            for(int col=0;col<t[row].size();col++){
+                curr[col]=t[row][col]+min(prev[col],prev[col+1]);
+            }
+            prev=curr;
+        }
+        return prev[0];
+    }
     int minimumTotal(vector<vector<int>>& triangle) {
         rows=triangle.size();
         cols=triangle[0].size();
         // vector<vector<int>>dp(rows,vector<int>(rows,-1));
         // return solve(0,0,triangle,dp);
-        return solveUsingTab(triangle);
+        // return solveUsingTab(triangle);
+        return solveUsingSpaceOp(triangle);
     }
 };
