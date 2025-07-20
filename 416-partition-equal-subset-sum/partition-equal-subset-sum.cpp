@@ -29,6 +29,25 @@ public:
         }
         return dp[n-1][target];
     }
+
+    bool solveUsingSpaceOp(int target,vector<int>& nums){
+        int n=nums.size();
+        vector<bool>prev(target+1,false);
+        prev[0]=true;
+        if(nums[0]<=target) prev[nums[0]]=true;
+        for(int i=1;i<n;i++){
+            vector<bool>curr(target+1,false);
+            curr[0]=true;
+            for(int tar=1;tar<=target;tar++){
+                bool exclude=prev[tar];
+                bool include=false;
+                if(nums[i]<=tar) include=prev[tar-nums[i]];
+                curr[tar]=(include || exclude);
+            }
+            prev=curr;
+        }
+        return prev[target];
+    }
     bool canPartition(vector<int>& nums) {
         int n = nums.size();
         int sum = accumulate(begin(nums), end(nums),0);
@@ -36,6 +55,7 @@ public:
             return false;
         int targetSum = sum >> 1;
         // return solve(0, targetSum, nums);
-        return solveUsingTab(targetSum,nums);
+        // return solveUsingTab(targetSum,nums);
+        return solveUsingSpaceOp(targetSum,nums);
     }
 };
