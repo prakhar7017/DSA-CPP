@@ -38,11 +38,32 @@ public:
 
         return dp[index][amount] = min(include, exclude);
     }
+    int solveusingTab(vector<int>& coins, int amount){
+        int n=coins.size();
+        vector<vector<int>>dp(n,vector<int>(amount+1,INT_MAX));
+        for(int amt=0;amt<=amount;amt++){
+            if((amt%coins[0])==0) dp[0][amt]=(amt/coins[0]);
+        }
+        
+        for(int i=1;i<n;i++){
+            for(int tar=0;tar<=amount;tar++){
+                int exclude=dp[i-1][tar];
+                int include=INT_MAX;
+                if(coins[i]<=tar){
+                    int subRes=dp[i][tar-coins[i]];
+                    if(subRes!=INT_MAX) include=1+subRes;
+                }
+                dp[i][tar]=min(include,exclude);
+            }
+        }
+        return dp[n-1][amount];
+    }
     int coinChange(vector<int>& coins, int amount) {
         int n = coins.size();
         // vector<int> dp(amount + 1, -1);
         vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
-        int ans = solve1(n-1, coins, amount, dp);
+        // int ans = solve1(n-1, coins, amount, dp);
+        int ans=solveusingTab(coins,amount);
         if (ans >= 1e9)
             return -1;
         else
