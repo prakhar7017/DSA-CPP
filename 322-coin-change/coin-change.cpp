@@ -58,12 +58,35 @@ public:
         }
         return dp[n-1][amount];
     }
+    int solveusingSpace(vector<int>& coins, int amount){
+        int n=coins.size();
+        vector<int>prev(amount+1,INT_MAX);
+        for(int amt=0;amt<=amount;amt++){
+            if((amt%coins[0])==0) prev[amt]=(amt/coins[0]);
+        }
+        
+        for(int i=1;i<n;i++){
+            vector<int>curr(amount+1,INT_MAX);
+            for(int tar=0;tar<=amount;tar++){
+                int exclude=prev[tar];
+                int include=INT_MAX;
+                if(coins[i]<=tar){
+                    int subRes=curr[tar-coins[i]];
+                    if(subRes!=INT_MAX) include=1+subRes;
+                }
+                curr[tar]=min(include,exclude);
+            }
+            prev=curr;
+        }
+        return prev[amount];
+    }
     int coinChange(vector<int>& coins, int amount) {
         int n = coins.size();
         // vector<int> dp(amount + 1, -1);
         vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
         // int ans = solve1(n-1, coins, amount, dp);
-        int ans=solveusingTab(coins,amount);
+        // int ans=solveusingTab(coins,amount);
+        int ans=solveusingSpace(coins,amount);
         if (ans >= 1e9)
             return -1;
         else
