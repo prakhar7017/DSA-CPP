@@ -37,6 +37,27 @@ public:
         }
         return dp[n-1][target];
     }
+    int solveUsingSpace(vector<int>& nums, int target){
+        int n=nums.size();
+        vector<int>prev(target+1,0);
+
+        if(nums[0]==0) prev[0]=2;
+        else prev[0]=1;
+
+        if(nums[0]!=0 && nums[0]<=target) prev[nums[0]]=1;
+
+        for(int i=1;i<n;i++){
+            vector<int>curr(target+1,0);
+            for(int tar=0;tar<=target;tar++){
+                int exclude=prev[tar];
+                int include=0;
+                if(nums[i]<=tar) include=prev[tar-nums[i]];
+                curr[tar]=include+exclude;
+            }
+            prev=curr;
+        }
+        return prev[target];
+    }
     int findTargetSumWays(vector<int>& nums, int target) {
         int n = nums.size();
         int totalSum = accumulate(begin(nums), end(nums), 0);
@@ -47,6 +68,6 @@ public:
         int s2 = (totalSum - target) / 2;
         // vector<vector<int>> dp(n, vector<int>(s2 + 1, -1));
         // return solve(n - 1, nums, s2, dp);
-        return solveUsingTab(nums,s2);
+        return solveUsingSpace(nums,s2);
     }
 };
