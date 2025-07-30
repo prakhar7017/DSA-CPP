@@ -41,8 +41,8 @@ public:
         int n = t1.length();
         int m = t2.length();
         vector<int>prev(m+1,0),curr(m+1,0);
-        for (int j = 0; j <= m; j++)
-            prev[j] = 0;
+        // for (int j = 0; j <= m; j++)
+        //     prev[j] = 0;
 
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
