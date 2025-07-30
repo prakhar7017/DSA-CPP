@@ -37,11 +37,31 @@ public:
 
         return dp[n][m];
     }
+    int solveUsingSpace(string& t1, string& t2) {
+        int n = t1.length();
+        int m = t2.length();
+        vector<int>prev(m+1,0),curr(m+1,0);
+        for (int j = 0; j <= m; j++)
+            prev[j] = 0;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (t1[i-1] == t2[j-1])
+                    curr[j] = 1 + prev[j - 1];
+                else
+                    curr[j] = max(prev[j], curr[j - 1]);
+            }
+            prev=curr;
+        }
+
+        return prev[m];
+    }
     int longestCommonSubsequence(string text1, string text2) {
         int n = text1.length();
         int m = text2.length();
         // vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
         // return solveUsingRec(n - 1, m - 1, text1, text2, dp);
-        return solveUsingTab(text1, text2);
+        // return solveUsingTab(text1, text2);
+        return solveUsingSpace(text1, text2);
     }
 };
