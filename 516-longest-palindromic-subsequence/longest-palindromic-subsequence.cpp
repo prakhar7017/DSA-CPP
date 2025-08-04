@@ -39,7 +39,8 @@ public:
         int n=s.length();
         int m=temp.length();
         // return solveUsingRec(n-1,m-1,s,temp);
-        return solveUsingTab(s,temp);
+        // return solveUsingTab(s,temp);
+        return solveUsingSpaceOp(s,temp);
         
     }
 };
