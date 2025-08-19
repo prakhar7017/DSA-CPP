@@ -20,10 +20,33 @@ public:
         }
         return -1;
     }
+    int solveUsingTab(string& w1, string& w2) {
+        int n = w1.length();
+        int m = w2.length();
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1));
+
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                if (i == 0 || j == 0)
+                    dp[i][j] = i + j;
+                else if (w1[i - 1] == w2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // 3 options
+                    int insertC = 1 + dp[i][j - 1];
+                    int deleteC = 1 + dp[i - 1][j];
+                    int replaceC = 1 + dp[i - 1][j-1];
+                    dp[i][j] = min({insertC, deleteC, replaceC});
+                }
+            }
+        }
+        return dp[n][m];
+    }
     int minDistance(string word1, string word2) {
         int n = word1.length();
         int m = word2.length();
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
-        return solveUsingRec(n, m, word1, word2, dp);
+        // return solveUsingRec(n, m, word1, word2, dp);
+        return solveUsingTab(word1, word2);
     }
 };
