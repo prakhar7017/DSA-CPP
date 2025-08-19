@@ -42,11 +42,35 @@ public:
         }
         return dp[n][m];
     }
+    int solveUsingSpace(string& w1, string& w2) {
+        int n = w1.length();
+        int m = w2.length();
+        vector<int>prev(m + 1);
+
+        for (int i = 0; i <= n; i++) {
+            vector<int>curr(m+1);
+            for (int j = 0; j <= m; j++) {
+                if (i == 0 || j == 0)
+                    curr[j] = i + j;
+                else if (w1[i - 1] == w2[j - 1]) {
+                    curr[j] = prev[j - 1];
+                } else {
+                    // 3 options
+                    int insertC = 1 + curr[j - 1];
+                    int deleteC = 1 + prev[j];
+                    int replaceC = 1 + prev[j-1];
+                    curr[j] = min({insertC, deleteC, replaceC});
+                }
+            }
+            prev=curr;
+        }
+        return prev[m];
+    }
     int minDistance(string word1, string word2) {
         int n = word1.length();
         int m = word2.length();
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
         // return solveUsingRec(n, m, word1, word2, dp);
-        return solveUsingTab(word1, word2);
+        return solveUsingSpace(word1, word2);
     }
 };
