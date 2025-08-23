@@ -1,17 +1,22 @@
 class Solution {
 public:
-    void solveUsingRec(int iday,int &minPrice,int &maxProfit,vector<int>&prices){
-        if(iday>=prices.size()) return;
-        if(prices[iday]<minPrice) minPrice=prices[iday];
-        int todayProfit=prices[iday]-minPrice;
-        if(todayProfit>maxProfit) maxProfit=todayProfit;
-        solveUsingRec(iday+1,minPrice,maxProfit,prices);
-
-    }
     int maxProfit(vector<int>& prices) {
-        int minPrice=INT_MAX;
-        int maxProfit=INT_MIN;
-        solveUsingRec(0,minPrice,maxProfit,prices);
+        int n=prices.size();
+        vector<int>t(n);
+        int maxSp=INT_MIN;
+
+        for(int i=n-1;i>=0;i--){
+            if(prices[i]>maxSp)maxSp=prices[i];
+            t[i]=maxSp;
+        }
+        int maxProfit=0;
+        for(int i=0;i<n;i++){
+            int profit=abs(prices[i]-t[i]);
+            if (profit>maxProfit){
+                maxProfit=profit;
+            }
+        }
+
         return maxProfit;
     }
 };
