@@ -14,32 +14,33 @@ public:
 
         } else {
             profit = max(prices[index] +
-                             solveUsingRec(index + 1, 1, cap-1, prices, dp),
+                             solveUsingRec(index + 1, 1, cap - 1, prices, dp),
                          0 + solveUsingRec(index + 1, 0, cap, prices, dp));
         }
         return dp[index][buy][cap] = profit;
     }
 
-    int solveUsingRec(vector<int>& prices) {
+    int solveUsingTab(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
-        // basecase
-        dp[n][0] = dp[n][1] = 0;
+        vector<vector<vector<int>>> dp(
+            n+1, vector<vector<int>>(2, vector<int>(3, 0)));
         int profit;
         for (int index = n - 1; index >= 0; index--) {
-            for (int buy = 1; buy >= 0; buy--) {
-                if (buy) {
-                    profit = max(-prices[index] + dp[index + 1][0],
-                                 0 + dp[index + 1][1]);
+            for (int buy = 0; buy <= 1; buy++) {
+                for (int cap = 1; cap <= 2; cap++) {
+                    if (buy) {
+                        profit = max(-prices[index] + dp[index + 1][0][cap],
+                                     0 + dp[index + 1][1][cap]);
 
-                } else {
-                    profit = max(prices[index] + dp[index + 1][1],
-                                 0 + dp[index + 1][0]);
+                    } else {
+                        profit = max(prices[index] + dp[index + 1][1][cap - 1],
+                                     0 + dp[index + 1][0][cap]);
+                    }
+                    dp[index][buy][cap] = profit;
                 }
-                dp[index][buy] = profit;
             }
         }
-        return dp[0][1];
+        return dp[0][1][2];
     }
 
     int solveUsingSpaceOptimized(vector<int>& prices) {
@@ -66,8 +67,9 @@ public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
         int cap = 2;
-        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(3, -1)));
-        return solveUsingRec(0, 1, cap, prices, dp);
-        // return solveUsingSpaceOptimized(prices);
+        vector<vector<vector<int>>> dp(
+            n, vector<vector<int>>(2, vector<int>(3, -1)));
+        // return solveUsingRec(0, 1, cap, prices, dp);
+        return solveUsingTab(prices);
     }
 };
