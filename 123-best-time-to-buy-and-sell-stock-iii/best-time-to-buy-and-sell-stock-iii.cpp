@@ -66,7 +66,7 @@ public:
         }
         return next[1][2];
     }
-    int maxProfit(vector<int>& prices) {
+    int solveUsing4Var(vector<int>& prices){
         int buy1 = INT_MIN, sell1 = 0;
         int buy2 = INT_MIN, sell2 = 0;
 
@@ -77,5 +77,14 @@ public:
             sell2 = max(sell2, buy2 + price); // Second sell
         }
         return sell2;
+    }
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        int cap = 2;
+        vector<vector<vector<int>>> dp(
+            n, vector<vector<int>>(2, vector<int>(3, -1)));
+        // return solveUsingRec(0, 1, cap, prices, dp);
+        // return solveUsingSpace(prices);
+        return solveUsing4Var(prices);
     }
 };
