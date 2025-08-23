@@ -19,9 +19,31 @@ public:
         }
         return dp[index][buy] = profit;
     }
+    int solveUsingRec(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+        // basecase
+        dp[n][0] = dp[n][1] = 0;
+        int profit;
+        for (int index = n - 1; index >= 0; index--) {
+            for (int buy = 1; buy >= 0; buy--) {
+                if (buy) {
+                    profit = max(-prices[index] + dp[index + 1][0],
+                                 0 + dp[index + 1][1]);
+
+                } else {
+                    profit = max(prices[index] + dp[index + 1][1],
+                                 0 + dp[index + 1][0]);
+                }
+                dp[index][buy]=profit;
+            }
+        }
+        return dp[0][1];
+    }
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
         vector<vector<int>> dp(n, vector<int>(2, -1));
-        return solveUsingRec(0, 1, prices, dp);
+        // return solveUsingRec(0, 1, prices, dp);
+        return solveUsingRec(prices);
     }
 };
