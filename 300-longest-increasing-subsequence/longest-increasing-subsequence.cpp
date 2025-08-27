@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int solveUsingRec(int idx,int prev,vector<int>& nums,vector<vector<int>>& dp){
+        // basecase
+        if(idx>=nums.size()) return 0;
+
+        if(dp[idx][prev+1]!=-1) return dp[idx][prev+1];
+
+        //take idx element
+        int take=0;
+        if(prev==-1 || nums[prev]<nums[idx]){
+            take=1+solveUsingRec(idx+1,idx,nums,dp);
+        }
+
+        int notTake=0;
+        notTake=0+solveUsingRec(idx+1,prev,nums,dp);
+        return dp[idx][prev+1]=max(take,notTake);
+    }
+
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        int prev=-1;
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        return solveUsingRec(0,prev,nums,dp);
+    }
+};
