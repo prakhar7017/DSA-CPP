@@ -32,11 +32,28 @@ public:
         return maxLis;
     }
 
+    int solveUsingBinarySearch(vector<int>& nums){
+        int n= nums.size();
+        vector<int>sorted;
+
+        for(int i=0;i<n;i++){
+            auto it= lower_bound(begin(sorted),end(sorted),nums[i]);
+
+            if(it==end(sorted)){
+                sorted.push_back(nums[i]);
+            }else{
+                *it = nums[i];
+            }
+        }
+
+        return sorted.size();
+    }
     int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
         int prev=-1;
         vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
         // return solveUsingRec(0,prev,nums,dp);
-        return solveUsingBottomUp(nums);
+        // return solveUsingBottomUp(nums);
+        return solveUsingBinarySearch(nums);
     }
 };
