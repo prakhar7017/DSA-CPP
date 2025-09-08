@@ -1,58 +1,59 @@
 class Solution {
 public:
-    void solveUsingRec(int index,int prev,vector<int>&temp,vector<int>&result,vector<int>&nums){
-        if(index>=nums.size()){
-            if(temp.size()>result.size()){
-                result=temp;
+    void solveUsingRec(int idx, int prev, vector<int>& nums, vector<int>& temp,
+                       vector<int>& result) {
+        if (idx >= nums.size()) {
+            if (temp.size() > result.size()) {
+                result = temp;
             }
             return;
         }
-        if( prev==-1 || nums[index]%prev==0 ){
-            temp.push_back(nums[index]);
-            solveUsingRec(index+1,nums[index],temp,result,nums);
-            // backtrack
-            temp.pop_back();
+        if (prev == -1 || nums[idx] % prev == 0) {
+            temp.push_back(nums[idx]);
+            solveUsingRec(idx + 1, nums[idx], nums, temp, result);
+            temp.pop_back(); // backtrack
         }
-
-        solveUsingRec(index+1,prev,temp,result,nums);
+        solveUsingRec(idx + 1, prev, nums, temp, result);
     }
-    vector<int>solveUsingBottomUp(vector<int>& nums){
-        int n=nums.size();
-        sort(begin(nums),end(nums));
-        vector<int>t(n,1);
-        vector<int>prev_index(n,-1);
+
+    vector<int> solveUsingBottomUp(vector<int>& nums) { 
+        int n = nums.size(); 
+        vector<int>dp(n,1);
+        vector<int>parent(n,-1);
+        int lastChosenIndex=0;
         int maxLen=1;
-        int last_choosen_index=0;
 
         for(int i=1;i<n;i++){
             for(int j=0;j<i;j++){
                 if(nums[i]%nums[j]==0){
-                    if(t[i]<t[j]+1){
-                        t[i]=t[j]+1;
-                        prev_index[i]=j;
+                    if(dp[i]<dp[j]+1){
+                        dp[i]=dp[j]+1;
+                        parent[i]=j;
                     }
 
-                    if(t[i]>maxLen){
-                        maxLen=t[i];
-                        last_choosen_index=i;
+                    if(dp[i]>maxLen){
+                        maxLen=dp[i];
+                        lastChosenIndex=i;
                     }
                 }
             }
         }
 
         vector<int>ans;
-        while(last_choosen_index>=0){
-            ans.push_back(nums[last_choosen_index]);
-            last_choosen_index=prev_index[last_choosen_index];
+        while(lastChosenIndex>=0){
+            ans.push_back(nums[lastChosenIndex]);
+            lastChosenIndex=parent[lastChosenIndex];
         }
         return ans;
+
     }
     vector<int> largestDivisibleSubset(vector<int>& nums) {
-        // vector<int>result;
-        // vector<int>temp;
-        // int prev=-1;
-        // sort(begin(nums),end(nums));
-        // solveUsingRec(0,prev,temp,result,nums);
+        sort(begin(nums), end(nums));
+        vector<int> result;
+        vector<int> temp;
+        int prev = -1;
+
+        // solveUsingRec(0, prev, nums, temp, result);
         return solveUsingBottomUp(nums);
     }
 };
