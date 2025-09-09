@@ -8,32 +8,53 @@ public:
         int m = s2.length();
         if (n > m || m - n != 1)
             return false;
-        int i=0,j=0;
-        while(i<n && j<m){
-            if(s1[i]==s2[j]) i++;
+        int i = 0, j = 0;
+        while (i < n && j < m) {
+            if (s1[i] == s2[j])
+                i++;
             j++;
         }
-        return i==n;
+        return i == n;
     }
-    int solveUsingRec(int idx, int prev, vector<string>& words,vector<vector<int>>& dp) {
+    int solveUsingRec(int idx, int prev, vector<string>& words,
+                      vector<vector<int>>& dp) {
         if (idx >= words.size())
             return 0;
 
-        if(dp[idx][prev+1]!=-1) return dp[idx][prev+1];    
+        if (dp[idx][prev + 1] != -1)
+            return dp[idx][prev + 1];
         int include = 0;
         int exclude = 0;
         if (prev == -1 || isPredecessor(words[prev], words[idx])) {
-            include = 1 + solveUsingRec(idx + 1, idx, words,dp);
+            include = 1 + solveUsingRec(idx + 1, idx, words, dp);
         }
-        exclude = 0 + solveUsingRec(idx + 1, prev, words,dp);
+        exclude = 0 + solveUsingRec(idx + 1, prev, words, dp);
 
-        return dp[idx][prev+1]=max(include, exclude);
+        return dp[idx][prev + 1] = max(include, exclude);
+    }
+
+    int solveUsingBottomUp(vector<string>& words) {
+        int n = words.size();
+
+        vector<int> dp(n, 1);
+        int maxLen = 1;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (isPredecessor(words[j], words[i])) {
+                    dp[i] = max(dp[i], dp[j] + 1);
+                    maxLen = max(dp[i], maxLen);
+                }
+            }
+        }
+        return maxLen;
     }
     int longestStrChain(vector<string>& words) {
         int n = words.size();
-        vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        vector<vector<int>> dp(n, vector<int>(n + 1, -1));
         sort(begin(words), end(words), lamda);
         int prev = -1;
-        return solveUsingRec(0, prev, words,dp);
+        // return solveUsingRec(0, prev, words, dp);
+        return solveUsingBottomUp(words);
     }
 };
