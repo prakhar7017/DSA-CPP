@@ -1,7 +1,6 @@
 class Solution {
 public:
-
-    int trap(vector<int>& height) {
+    int solve(vector<int>& height){
         int n = height.size();
         vector<int>leftMax(n,0);
         vector<int>rightMax(n,0);
@@ -19,6 +18,29 @@ public:
         int ans=0;
         for(int i=0;i<n;i++){
             ans+=min(leftMax[i],rightMax[i])-height[i];
+        }
+        return ans;
+    }
+    int trap(vector<int>& height) {
+        int n =  height.size();
+        int ans = 0;
+        int leftMax=0;
+        int rightMax=0;
+
+        int leftPtr=0;
+        int rightPtr=n-1;
+
+        while(leftPtr<rightPtr){
+            leftMax=max(leftMax,height[leftPtr]);
+            rightMax=max(rightMax,height[rightPtr]);
+
+            if(leftMax<rightMax){
+                ans+=leftMax-height[leftPtr];
+                leftPtr++;
+            }else{
+                ans+=rightMax-height[rightPtr];
+                rightPtr--;
+            }
         }
         return ans;
     }
