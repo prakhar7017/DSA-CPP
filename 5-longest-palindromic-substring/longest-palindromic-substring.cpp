@@ -23,7 +23,36 @@ public:
         }
         return s.substr(start,maxLen);
     }
+
+    string solveUsingOptimised(string& s){
+        int n = s.length();
+        int maxLen=0;
+        int start=0;
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+
+        for(int Len=1;Len<=n;Len++){
+            for(int i=0;i+Len-1<n;i++){
+                int j = i+Len-1;
+                if(i==j) dp[i][j]=true;
+                else if(i+1==j){
+                    dp[i][j]=(s[i]==s[j]);
+                }else{
+                    dp[i][j]=(s[i]==s[j] && dp[i+1][j-1]);
+                }
+
+                if(dp[i][j]){
+                    if(j-i+1>maxLen){
+                        maxLen = j-i+1;
+                        start=i;
+                    }
+                }
+            }
+        }
+
+        return s.substr(start,maxLen);
+    }
     string longestPalindrome(string s) {
-        return solveUsingBruteForce(s);
+        // return solveUsingBruteForce(s);
+        return solveUsingOptimised(s);
     }
 };
