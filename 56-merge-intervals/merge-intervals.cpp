@@ -41,8 +41,22 @@ public:
         ans.push_back(last_interval);
         return ans;
     }
+
+    vector<vector<int>> solveOptimised1(vector<vector<int>>& intervals){
+        int n= intervals.size();
+        sort(begin(intervals),end(intervals));
+        vector<vector<int>>ans;
+        for(int i=0;i<n;i++){
+            if(ans.empty() || ans.back()[1]<intervals[i][0]){
+                ans.push_back(intervals[i]);
+            }else{
+                ans.back()[1]= max(ans.back()[1],intervals[i][1]);
+            }
+        }
+        return ans;
+    }
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
         // return solveBruteForce(intervals);
-        return solveOptimised(intervals);
+        return solveOptimised1(intervals);
     }
 };
