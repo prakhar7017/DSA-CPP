@@ -54,20 +54,60 @@ public:
     }
 
     ListNode* partitionAndMerge(int start, int end, vector<ListNode*>& lists) {
-        if(start>end) return nullptr;
+        if (start > end)
+            return nullptr;
 
-        if(start==end) return lists[start];
+        if (start == end)
+            return lists[start];
 
         int mid = start + (end - start) / 2;
 
         ListNode* L1 = partitionAndMerge(start, mid, lists);
         ListNode* L2 = partitionAndMerge(mid + 1, end, lists);
 
-        return mergeTwoLL(L1,L2);
+        return mergeTwoLL(L1, L2);
+    }
+
+    using P = pair<int, ListNode*>;
+    struct Compare {
+        bool operator()(const P& a,
+                        P& b) const {
+            return a.first >
+                   b.first; // Min-heap (smaller value = higher priority)
+        }
+    };
+
+
+    ListNode* solveUsingMinHeap(vector<ListNode*>& lists) {
+        priority_queue<P, vector<P>, Compare> pq;
+
+        // Push the first node of each list
+        for (ListNode*& node : lists) {
+            if (node)
+                pq.push({node->val, node});
+        }
+
+        ListNode* dummyNode = new ListNode(-1);
+        ListNode* temp = dummyNode;
+
+        // Process heap
+        while (!pq.empty()) {
+            auto [value, node] = pq.top();
+            pq.pop();
+
+            temp->next = node;
+            temp = temp->next;
+
+            if (node->next)
+                pq.push({node->next->val, node->next});
+        }
+
+        return dummyNode->next;
     }
 
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         // return solveUsingBruteForce(lists);
-        return partitionAndMerge(0,lists.size()-1,lists);
+        // return partitionAndMerge(0, lists.size() - 1, lists);
+        return solveUsingMinHeap(lists);
     }
 };
