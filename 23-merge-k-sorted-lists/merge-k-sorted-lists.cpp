@@ -10,28 +10,34 @@
  */
 class Solution {
 public:
-    ListNode* merge(vector<ListNode*>& lists){
-        priority_queue<pair<int,ListNode*>,vector<pair<int,ListNode*>>,greater<pair<int,ListNode*>>>pq;
-        for(auto list:lists){
-            if(list) pq.push({list->val,list});
+    ListNode* convertArrintoLL(vector<int>& arr){
+        int n= arr.size();
+        ListNode* dummyNode = new ListNode(-1);
+        ListNode* temp=dummyNode;
+        for(int i=0;i<n;i++){
+            ListNode* newNode=new ListNode(arr[i]);
+            temp->next=newNode;
+            temp=newNode;
         }
 
-        ListNode* dummyNode= new ListNode(-1);
-        ListNode* temp=dummyNode;
-        while(!pq.empty()){
-            auto top=pq.top();
-            pq.pop();
-            int value=top.first;
-            ListNode* node=top.second;
-            temp->next=node;
-            temp=temp->next;
-            if(node->next){
-                pq.push({node->next->val,node->next});
-            }
-        }
         return dummyNode->next;
     }
+    ListNode* solveUsingBruteForce(vector<ListNode*>& lists){
+        int k = lists.size();
+        vector<int>arr;
+        for(int i=0;i<k;i++){
+            ListNode* node = lists[i];
+            while(node){
+                int value= node->val;
+                arr.push_back(value);
+                node=node->next;
+            }
+        }
+        sort(begin(arr),end(arr));
+
+        return convertArrintoLL(arr);
+    }
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        return merge(lists);
+        return solveUsingBruteForce(lists);
     }
 };
