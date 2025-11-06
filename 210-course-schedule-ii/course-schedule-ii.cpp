@@ -1,47 +1,34 @@
 class Solution {
 public:
-    vector<int> solveUsingBFS(int &numCourses, vector<vector<int>>& prerequisites){
-        vector<int>indeg(numCourses,0);
+    vector<int> topoSort(int numCourses, vector<vector<int>>& prerequisites){
+        vector<int>indegree(numCourses,0);
+        unordered_map<int,vector<int>>adj;
         queue<int>q;
-        unordered_map<int,vector<int>>adjList;
-        int count=0;
-        for(vector<int>&prereq:prerequisites){
-            int course1=prereq[0];
-            int course2=prereq[1];
-            adjList[course2].push_back(course1);
-            indeg[course1]++;
-        }
-
-        // for(int course=0;course<numCourses;course++){
-        //     for(int cor:adjList[course]){
-        //         indeg[cor]++;
-        //     }
-        // }
-
-        for(int course=0;course<numCourses;course++){
-            if(indeg[course]==0){
-                q.push(course);
-                count++;
-            }
-        }
         vector<int>ans;
+
+        for(vector<int>&preq:prerequisites){
+            adj[preq[1]].push_back(preq[0]);
+            indegree[preq[0]]++;
+        }
+
+        for(int i=0;i<numCourses;i++){
+            if(indegree[i]==0) q.push(i);
+        }
+
         while(!q.empty()){
-            int frontCourse=q.front();
+            int currNode= q.front();
             q.pop();
-            ans.push_back(frontCourse);
-            for(int &course:adjList[frontCourse]){
-                indeg[course]--;
-                if(indeg[course]==0){
-                    q.push(course);
-                    count++;
-                }
+            ans.push_back(currNode);
+
+            for(int &v:adj[currNode]){
+                indegree[v]--;
+                if(indegree[v]==0) q.push(v);
             }
         }
 
-        if(count!=numCourses) return {};
-        return ans;
+        return ans.size()==numCourses ? ans: vector<int>();
     }
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-         return solveUsingBFS(numCourses,prerequisites);
+        return topoSort(numCourses,prerequisites);
     }
 };
