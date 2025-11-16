@@ -32,6 +32,6 @@ public:
         return result;
     }
     int numSub(string s) {
-        return solve2(s);
+        return solve1(s);
     }
 };
