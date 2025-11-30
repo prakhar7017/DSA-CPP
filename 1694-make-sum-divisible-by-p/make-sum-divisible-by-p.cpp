@@ -1,31 +1,31 @@
 class Solution {
 public:
-    int minSubarray(vector<int>& a, int p) {
-        int n = a.size();
-        long long ts = 0;
-        for (int x : a) {
-            ts += x;
+    int minSubarray(vector<int>& nums, int p) {
+        int n = nums.size();
+        int SUM=0;
+        for(int &num:nums){
+            SUM= (SUM+num)%p;
         }
-        
-        int r = ts % p;
-        if (r == 0) return 0;
 
-        unordered_map<int, int> mp;
-        mp[0] = -1;
-        int crr = 0;
-        int ml = n;
-        
-        for (int i = 0; i < n; ++i) {
-            crr = (crr + a[i]) % p;
-            int t = (crr - r + p) % p;
-            
-            if (mp.find(t) != mp.end()) {
-                ml = min(ml, i - mp[t]);
+        int target = SUM%p;
+
+        if (target==0) return 0;
+
+        unordered_map<int,int>mp;
+        int curr=0;
+        mp[0]=-1;
+
+        int result = n;
+        for(int j=0;j<n;j++){
+            curr = (curr+nums[j])%p;
+
+            int remain = (curr - target+p)%p;
+            if(mp.find(remain)!=mp.end()){
+                result = min(result,j-mp[remain]);
             }
-            
-            mp[crr] = i;
+            mp[curr]=j;
         }
-        
-        return ml == n ? -1 : ml;
+
+        return result == n ? -1 : result;
     }
 };
