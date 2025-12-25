@@ -22,7 +22,7 @@ public:
         int n = edges.size();
         vector<bool> visited(n, false);
         vector<bool> inRecursion(n, false);
-        vector<int> count(n, 1);
+        vector<int> count(n, 1);  // used for counting no of nodes we have seen
         for (int i = 0; i < n; i++) {
             if (!visited[i])
                 dfs(i, visited, inRecursion, count, edges);
