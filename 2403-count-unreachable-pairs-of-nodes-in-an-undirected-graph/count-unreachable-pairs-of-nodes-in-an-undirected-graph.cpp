@@ -1,51 +1,53 @@
 class Solution {
 public:
-    vector<int>parent;
-    vector<int>rank;
-    int findParent(int u){
-        if(u==parent[u]) return u;
-        return  parent[u]=findParent(parent[u]);
+    vector<int> parent;
+    vector<int> rank;
+
+    int findParent(int node) {
+        if (node == parent[node])
+            return node;
+        return parent[node] = findParent(parent[node]);
     }
 
-    void Union(int u,int v){
-        u=findParent(u);
-        v=findParent(v);
+    void Union(int x, int y) {
+        x = findParent(x);
+        y = findParent(y);
 
-        if(u==v) return;
-        if(rank[u]>rank[v]) parent[v]=u;
-        else if(rank[u]<rank[v]) parent[u]=v;
-        else {
-            parent[v]=u;
-            rank[u]++;
+        if (x == y)
+            return;
+
+        if (rank[x] < rank[y]) {
+            parent[x] = y;
+        } else if (rank[x] > rank[y]) {
+            parent[y] = x;
+        } else {
+            parent[y] = x;
+            rank[x]++;
         }
     }
     long long countPairs(int n, vector<vector<int>>& edges) {
         parent.resize(n);
-        rank.resize(n,0);
+        rank.resize(n, 0);
+        for (int i = 0; i < n; i++)
+            parent[i] = i;
 
-        for(int i=0;i<n;i++) parent[i]=i;
-
-        for(vector<int>&edge:edges){
-            Union(edge[0],edge[1]);
+        for (vector<int>& edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            Union(u,v);
         }
-
-        unordered_map<int,int>mp;
+        unordered_map<int,int>compSize;
 
         for(int i=0;i<n;i++){
-            int p = findParent(i);
-            mp[p]++;
+            compSize[findParent(i)]++;
         }
-
-        long long result = 0;
+        long long ans=0;
         long long remaining = n;
-
-        for(auto &it:mp){
-            long long size = it.second;
-            result+=size*(remaining-size);
+        for(auto &it:compSize){
+            int size = it.second;
+            ans+=size*(remaining-size);
             remaining-=size;
         }
-
-        return result;
-
+        return ans;
     }
 };
