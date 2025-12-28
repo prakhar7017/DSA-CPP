@@ -48,8 +48,7 @@ public:
         sort(begin(edges),end(edges),lambda);
 
         int edgesUsed = 0;
-        for(int i=0;i<edges.size();i++){
-            vector<int> edge = edges[i];
+        for(vector<int> &edge:edges){
             int type = edge[0];
             int u = edge[1];
             int v = edge[2];
