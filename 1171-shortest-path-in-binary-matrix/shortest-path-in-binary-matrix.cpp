@@ -10,7 +10,7 @@ public:
         int rows = grid.size();
         int cols = grid[0].size();
 
-        if(rows==0 || cols == 0 || grid[0][0]==1) return -1;
+        if(rows==0 || cols == 0 || grid[0][0]==1 || grid[rows-1][cols-1]==1) return -1;
         vector<vector<bool>>vis(rows,vector<bool>(cols,false));
 
         queue<P>q;
