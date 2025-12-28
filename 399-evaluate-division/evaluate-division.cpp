@@ -16,6 +16,30 @@ public:
             dfs(v,dest,vis,result,product*val,adj);
         }    
     }
+    void BFS(string src,string dest,unordered_set<string>&vis,double &result,double product,unordered_map<string,vector<P>>&adj){
+        queue<P>q;
+        q.push({src,product});
+        vis.insert(src);
+
+        while(!q.empty()){
+            auto [node,prod] = q.front();
+            q.pop();
+
+            if(node == dest) {
+                result = prod;
+                return;
+            }
+
+            for(auto p:adj[node]){
+                string v = p.first;
+                double val = p.second;
+                if(vis.find(v)==vis.end()){
+                    q.push({v,prod*val});
+                    vis.insert(v);
+                }
+            }
+        }
+    }
     vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
         int n = equations.size();
         unordered_map<string,vector<P>>adj;
@@ -35,9 +59,10 @@ public:
             double result = -1.0;
             double product = 1.0;
 
-            if(adj.find(src)!=adj.end()){
+            if(adj.find(src)!=adj.end() && adj.find(dest)!=adj.end()){
                 unordered_set<string>vis;
-                dfs(src,dest,vis,result,product,adj);
+                // dfs(src,dest,vis,result,product,adj);
+                BFS(src,dest,vis,result,product,adj);
             }
 
             ans.push_back(result);
