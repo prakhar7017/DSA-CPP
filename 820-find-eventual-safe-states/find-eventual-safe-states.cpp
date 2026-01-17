@@ -1,34 +1,33 @@
 class Solution {
 public:
-    bool DFS(int src,vector<bool>&vis,vector<bool>&inRec,vector<vector<int>>& graph){
-        vis[src]=true;
-        inRec[src]=true;
+    bool isCycleExist(int node,vector<bool>&vis,vector<bool>&inRec,vector<vector<int>>& graph){
+        vis[node]=true;
+        inRec[node]=true;
 
-        for(int &v:graph[src]){
-            if(!vis[v]){
-                bool isCycle = DFS(v,vis,inRec,graph);
-                if (isCycle) return true;
-            } else if(inRec[v]==true) return true;
+        for(int &nbrNode:graph[node]){
+            if(!vis[nbrNode]){
+                bool checkCycle = isCycleExist(nbrNode,vis,inRec,graph);
+                if (checkCycle) return true;
+            } else if(inRec[nbrNode]){
+                return true;
+            }
         }
-
-        inRec[src]=false;
+        inRec[node]=false;
         return false;
-
     }
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         int n = graph.size();
         vector<bool>vis(n,false);
         vector<bool>inRec(n,false);
+
+        for(int i=0;i<n;i++){
+            isCycleExist(i,vis,inRec,graph);
+        }
+
         vector<int>ans;
-
         for(int i=0;i<n;i++){
-            DFS(i,vis,inRec,graph);
+            if(inRec[i]==false) ans.push_back(i);
         }
-
-        for(int i=0;i<n;i++){
-            if(!inRec[i]) ans.push_back(i);
-        }
-
         return ans;
     }
 };
