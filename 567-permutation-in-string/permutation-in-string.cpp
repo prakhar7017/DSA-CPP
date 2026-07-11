@@ -43,18 +43,14 @@ public:
             freq1[c-'a']++;
         }
 
-        for(int i=0;i<m;i++){
-            freq2[s2[i]-'a']++;
-        }
-
-        if(freq1==freq2) return true;
-
         int left = 0;
-        for(int right = m;right < n; right++){
-            freq2[s2[left]-'a']--;
-            left++;
+        for(int right = 0;right < n; right++){
             freq2[s2[right]-'a']++;
-            if(freq1 == freq2) return true;
+            if(right - left + 1 > m){
+                freq2[s2[left]-'a']--;
+                left++;
+            }
+            if(right-left+1==m && freq1 == freq2) return true;
         }
         return false;
     }
