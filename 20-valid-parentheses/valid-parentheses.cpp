@@ -1,43 +1,18 @@
 class Solution {
 public:
-    bool solveUsingMoreCleanApproach(string& s){
-        stack<char>st;
-
-        for(char &ch:s){
-            if(ch=='(') st.push(')');
-            else if(ch=='{') st.push('}');
-            else if(ch=='[') st.push(']');
-            else if(st.empty() || st.top()!=ch) return false;
-            else st.pop();
-        }
-        return st.empty();
-    }
-
-     bool solveUsingStack(string& s){
-        stack<char>st;
-
-        for(char &ch:s){
-            if(st.empty() || ch=='(' || ch=='{' || ch=='['){
-                st.push(ch);
-                continue;
-            }
-
-            if(ch==')'){
-                if(st.top()=='(') st.pop();
-                else return false;
-            }else if(ch=='}'){
-                if(st.top()=='{') st.pop();
-                else return false;
-            }else if(ch==']'){
-                if(st.top()=='[') st.pop();
-                else return false;
-            }else{
-                return false;
+    bool solveBruteForce(string s){
+        bool changed = true;
+        while(changed){
+            changed = false;
+            for(int i=0;i+1<s.size();i++){
+                if((s[i]=='(' && s[i+1]==')') || (s[i]=='{' && s[i+1]=='}') || (s[i]=='[' && s[i+1]==']')){
+                    s.erase(i,2);
+                    changed = true;
+                    break; // restart scaning after modifying
+                }
             }
         }
-        return st.empty();
+        return s.empty();
     }
-    bool isValid(string s) {
-        return solveUsingStack(s);
-    }
+    bool isValid(string s) { return solveBruteForce(s); }
 };
