@@ -14,5 +14,16 @@ public:
         }
         return s.empty();
     }
-    bool isValid(string s) { return solveBruteForce(s); }
+    bool optimised(string s){
+        stack<char>st;
+        for(char ch:s){
+            if(ch == '(') st.push(')');
+            else if(ch == '{') st.push('}');
+            else if(ch == '[') st.push(']');
+            else if( st.empty() || st.top()!= ch) return false;
+            else st.pop();
+        }
+        return st.empty();
+    }
+    bool isValid(string s) { return optimised(s); }
 };
