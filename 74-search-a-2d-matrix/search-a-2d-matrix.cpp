@@ -23,7 +23,21 @@ public:
         }
         return false;
     }
+    bool solveOptimised(vector<vector<int>>& matrix, int target){
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        int s = 0;
+        int e = rows-1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(matrix[mid][0]>target) e = mid-1;
+            else if(matrix[mid][cols-1]<target) s = mid + 1;
+            else return binarySearch(matrix[mid], target); 
+        }
+        return false;
+    }
+
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        return solveBruteForce(matrix,target);
+        return solveOptimised(matrix,target);
     }
 };
