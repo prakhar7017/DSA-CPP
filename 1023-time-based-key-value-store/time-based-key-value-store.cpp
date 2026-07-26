@@ -5,7 +5,7 @@ public:
     TimeMap() {}
     string bruteForce(string key, int timestamp){
         if(mp.find(key)==mp.end()) return "";
-        vector<P> values = mp[key];
+        vector<P>& values = mp[key];
         for(int i=values.size()-1;i>=0;i--){
             int timeS = values[i].first;
             if(timeS<=timestamp) return values[i].second;
