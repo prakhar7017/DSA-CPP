@@ -71,7 +71,29 @@ public:
 
         return head;
     }
+    ListNode* optimised(ListNode* head, int n){
+        if(!head) return head;
+        ListNode* a = head;
+        ListNode* b = head;
+
+        for(int i=1;i<=n;i++){
+            b = b->next;
+        }
+
+        if (!b) {
+            return head->next;
+        }
+
+
+        while(b->next){
+            a = a->next;
+            b = b->next;
+        }
+
+        a ->next = a->next->next;
+        return head;
+    }
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        return better(head,n);   
+        return optimised(head,n);   
     }
 };
