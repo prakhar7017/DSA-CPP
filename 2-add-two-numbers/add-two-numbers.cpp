@@ -10,31 +10,37 @@
  */
 class Solution {
 public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+    ListNode* solve(ListNode* l1, ListNode* l2) {
+        if (!l1 && !l2)
+            return nullptr;
+        if (!l1)
+            return l2;
+        if (!l2)
+            return l1;
+
         ListNode* dummyNode = new ListNode(-1);
         ListNode* curr = dummyNode;
         int carry = 0;
-
         while (l1 || l2) {
             int sum = carry;
             if (l1) {
                 sum += l1->val;
                 l1 = l1->next;
             }
+
             if (l2) {
                 sum += l2->val;
                 l2 = l2->next;
             }
 
-            curr->next = new ListNode(sum % 10);
+            curr->next = new ListNode(sum%10);
             curr = curr->next;
-            carry = sum / 10;
+            carry = sum/10;
         }
 
-        if (carry) {
-            curr->next = new ListNode(carry);
-        }
+        if(carry) curr->next = new ListNode(carry);
 
         return dummyNode->next;
     }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {return solve(l1,l2);}
 };
