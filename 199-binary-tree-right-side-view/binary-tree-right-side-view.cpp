@@ -11,6 +11,22 @@
  */
 class Solution {
 public:
+    void inorder(TreeNode* root,int height,map<int,TreeNode*>&mp){
+        if(!root) return;
+        mp[height]=root;
+        inorder(root->left,height+1,mp);
+        inorder(root->right,height+1,mp);
+    }
+    vector<int> solveUsingMap(TreeNode* root){
+        if(!root) return {};
+        map<int,TreeNode*>mp;
+        vector<int>ans;
+        inorder(root,0,mp);
+        for(auto it:mp){
+            ans.push_back(it.second->val);
+        }
+        return ans;
+    }
     vector<int> solveUsingLevelOrder(TreeNode* root){
         if(!root) return {};
         queue<TreeNode*>q;
@@ -29,6 +45,6 @@ public:
         return ans;
     }
     vector<int> rightSideView(TreeNode* root) {
-        return solveUsingLevelOrder(root);
+        return solveUsingMap(root);
     }
 };
