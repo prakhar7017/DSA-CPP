@@ -20,10 +20,25 @@ public:
             }
         }
     }
+    void solve2(int idx,vector<int>& nums){
+        if(idx>=n){
+            ans.push_back(nums);
+            return;
+        }
+
+        for(int i=idx;i<n;i++){
+            swap(nums[idx],nums[i]);
+            solve2(idx+1,nums);
+            //backtrack
+            swap(nums[idx],nums[i]);
+        }
+    }
     vector<vector<int>> permute(vector<int>& nums) {
         n= nums.size();
         vector<int>temp;
-        solve(nums,temp);
+        // solve(nums,temp);
+        int idx =0;
+        solve2(idx,nums);
         return ans;
     }
 };
