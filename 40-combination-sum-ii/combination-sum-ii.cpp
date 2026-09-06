@@ -1,31 +1,43 @@
 class Solution {
-    private:
-    void combinationSumHelper(vector<vector<int>>&ans,vector<int>& candidates,
-    vector<int>&v,int target,int index){
-        //base case
-        if(target==0){
-            ans.push_back(v);
+public:
+    void solve(int idx, int target, vector<int>& candidates,
+               vector<int>& path, vector<vector<int>>& paths) {
+
+        if (target == 0) {
+            paths.push_back(path);
             return;
         }
-        if(target<0){
-            return;
-        }
-        //processing
-        for(int i=index;i<candidates.size();i++){
-            if(i>index && candidates[i]==candidates[i-1]){
+
+        for (int i = idx; i < candidates.size(); i++) {
+
+            // Skip duplicates at the same level
+            if (i > idx && candidates[i] == candidates[i - 1])
                 continue;
-            }
-            v.push_back(candidates[i]);
-            combinationSumHelper(ans,candidates,v,target-candidates[i],i+1);
-            v.pop_back();
+
+            // Since sorted, nothing after this can work
+            if (candidates[i] > target)
+                break;
+
+            // Include
+            path.push_back(candidates[i]);
+
+            solve(i + 1, target - candidates[i],
+                  candidates, path, paths);
+
+            // Backtrack
+            path.pop_back();
         }
     }
-public:
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        sort(candidates.begin(),candidates.end());
-        vector<vector<int>>ans; 
-        vector<int>v;
-        combinationSumHelper(ans,candidates,v,target,0);
-        return ans; 
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates,
+                                        int target) {
+        sort(candidates.begin(), candidates.end());
+
+        vector<vector<int>> paths;
+        vector<int> path;
+
+        solve(0, target, candidates, path, paths);
+
+        return paths;
     }
 };
