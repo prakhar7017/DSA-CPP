@@ -1,5 +1,9 @@
 class Solution {
 public:
+    unordered_set<int>cSet;
+    unordered_set<int>dSet;
+    unordered_set<int>adSet;
+
     vector<vector<string>> ans;
     int N;
     bool isSafe(int row, int col, vector<string>& board) {
@@ -36,10 +40,35 @@ public:
             }
         }
     }
+    void solve2(int row, vector<string>& board) {
+        if (row >= N) {
+            ans.push_back(board);
+            return;
+        }
+        for (int col = 0; col < N; col++) {
+            int diagConst = row+col;
+            int antiDiagConst = row-col;
+            if (cSet.find(col)!=cSet.end() || dSet.find(diagConst)!=dSet.end() || adSet.find(antiDiagConst)!=adSet.end() ) continue;
+
+            cSet.insert(col);
+            dSet.insert(diagConst);
+            adSet.insert(antiDiagConst);
+
+            board[row][col]='Q';
+
+            solve(row+1,board);
+
+            cSet.erase(col);
+            dSet.erase(diagConst);
+            adSet.erase(antiDiagConst);
+
+            board[row][col]='.';
+        }
+    }
     vector<vector<string>> solveNQueens(int n) {
         N = n;
         vector<string> board(n, string(n, '.'));
-        solve(0, board);
+        solve2(0, board);
         return ans;
     }
 };
