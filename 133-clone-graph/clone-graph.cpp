@@ -1,48 +1,45 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
 class Solution {
 public:
-    unordered_map<Node*, Node*> mp;
-    void DFS(Node* node, Node* cloneNode) {
-        for(Node* neighNode:node->neighbors){
-            if(mp.find(neighNode)==mp.end()){
-                Node* clonedNeighNode = new Node(neighNode->val);
-                mp[neighNode]=clonedNeighNode;
-                cloneNode->neighbors.push_back(clonedNeighNode);
-                DFS(neighNode,clonedNeighNode);
+    unordered_map<Node*,Node*>mp;
+    void DFS(Node* node,Node* cloned){
+        for(Node* n:node->neighbors){
+            if(mp.find(n)==mp.end()){
+                Node* clone = new Node(n->val);
+                mp[n]=clone;
+                cloned->neighbors.push_back(clone);
+                DFS(n,clone);
             }else{
-                cloneNode->neighbors.push_back(mp[neighNode]);
+                cloned->neighbors.push_back(mp[n]);
             }
         }
     }
-
-    void BFS(queue<Node*>&q){
-        while(!q.empty()){
-            Node* currNode = q.front();
-            Node* clonedNode = mp[currNode];
-            q.pop();
-
-            for(Node* neighNode: currNode->neighbors){
-                if(mp.find(neighNode)==mp.end()){
-                    Node* clonedNeighNode = new Node(neighNode->val);
-                    mp[neighNode]=clonedNeighNode;
-                    clonedNode->neighbors.push_back(clonedNeighNode);
-                    q.push(neighNode);
-                }else{
-                    clonedNode->neighbors.push_back(mp[neighNode]);
-                }
-            }
-        }
-    }
-
     Node* cloneGraph(Node* node) {
-        if (!node)
-            return nullptr;
+        if(!node) return nullptr;
         mp.clear();
-        Node* clonedNode = new Node(node->val);
-        mp[node] = clonedNode;
-        // DFS(node, clonedNode);
-        queue<Node*> que;
-        que.push(node);
-        BFS(que);
-        return clonedNode;
+        Node* cloned = new Node(node->val);
+        mp[node]=cloned;
+        DFS(node,cloned);
+        return cloned;
     }
 };
