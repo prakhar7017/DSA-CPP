@@ -9,7 +9,7 @@ public:
         return false;
     }
     int BFS(queue<P>&q,vector<vector<int>>& grid){
-        int time = -1;
+        int time = 0;
         while(!q.empty()){
             int size = q.size();
             while(size--){
@@ -28,7 +28,7 @@ public:
             }
             time++;
         }
-        return time;
+        return time-1;
 
     }
     int orangesRotting(vector<vector<int>>& grid) {
