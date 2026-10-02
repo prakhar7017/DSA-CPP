@@ -1,20 +1,15 @@
 class Solution {
 public:
-    vector<string>getNeighbors(string s){
-        vector<string>neighbors;
-        string temp=s;
-        for(int i=0;i<s.length();i++){
-            for(char ch='a';ch<='z';ch++){
-                if(ch == temp[i]) continue;
-                temp[i]=ch;
-                neighbors.push_back(temp);
-            }
-            temp=s;
-        }
-        return neighbors;
-    }
     int BFS(string beginWord, string endWord, vector<string>& wordList){
         unordered_set<string>st(begin(wordList),end(wordList));
+        unordered_map<string,vector<string>>mp;
+        for(string s:wordList){
+            for(int i=0;i<s.length();i++){
+                string pattern = s;
+                pattern[i]='*';
+                mp[pattern].push_back(s);
+            }
+        }
         int steps=0;
         queue<string>q;
         q.push(beginWord);
@@ -26,16 +21,25 @@ public:
                 if(curr == endWord) return steps;
 
                 for(int i=0;i<curr.length();i++){
-                    char ori = curr[i];
-                    for(char j='a';j<='z';j++){
-                        if(j == ori) continue;
-                        curr[i]=j;
-                        if(st.count(curr)){
-                            st.erase(curr);
-                            q.push(curr);
+                    // char ori = curr[i];
+                    // for(char j='a';j<='z';j++){
+                    //     if(j == ori) continue;
+                    //     curr[i]=j;
+                    //     if(st.count(curr)){
+                    //         st.erase(curr);
+                    //         q.push(curr);
+                    //     }
+                    // }
+                    // curr[i]=ori;
+
+                    string pattern = curr;
+                    pattern[i]='*';
+                    for(string next:mp[pattern]){
+                        if(st.count(next)){
+                            st.erase(next);
+                            q.push(next);
                         }
                     }
-                    curr[i]=ori;
                 }
             }
         }
