@@ -5,6 +5,7 @@ public:
         string temp=s;
         for(int i=0;i<s.length();i++){
             for(char ch='a';ch<='z';ch++){
+                if(ch == temp[i]) continue;
                 temp[i]=ch;
                 neighbors.push_back(temp);
             }
@@ -24,11 +25,17 @@ public:
                 string curr = q.front(); q.pop();
                 if(curr == endWord) return steps;
 
-                for(string next:getNeighbors(curr)){
-                    if(st.count(next)){
-                        st.erase(next);
-                        q.push(next);
+                for(int i=0;i<curr.length();i++){
+                    char ori = curr[i];
+                    for(char j='a';j<='z';j++){
+                        if(j == ori) continue;
+                        curr[i]=j;
+                        if(st.count(curr)){
+                            st.erase(curr);
+                            q.push(curr);
+                        }
                     }
+                    curr[i]=ori;
                 }
             }
         }
