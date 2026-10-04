@@ -1,25 +1,24 @@
 class Solution {
 public:
-    unordered_map<string, priority_queue<string, vector<string>, greater<string>>> adj;
-    vector<string> result;
-    void dfs(string u) {
-        auto & edges = adj[u];
-        
-        while (!edges.empty())
-        {
-            string v = edges.top();
-            edges.pop();
-            dfs(v);
+    vector<string>ans;
+    void DFS(string start,unordered_map<string,multiset<string>>&adj){
+        while(!adj[start].empty()){
+            string nextAirport = *adj[start].begin();
+            //erase the airport for not visiting again.
+            adj[start].erase(adj[start].begin());
+            DFS(nextAirport,adj);
         }
-        result.push_back(u);
+        ans.push_back(start);
     }
-    
     vector<string> findItinerary(vector<vector<string>>& tickets) {
-        for (auto e : tickets)
-            adj[e[0]].push(e[1]);
         
-        dfs("JFK");
-        reverse(result.begin(), result.end());
-        return result;
+        unordered_map<string,multiset<string>>adj;
+        for(auto &t:tickets){
+            adj[t[0]].insert(t[1]);
+        }
+        string startAirport = "JFK";
+        DFS(startAirport,adj);
+        reverse(begin(ans),end(ans));
+        return ans;
     }
 };
