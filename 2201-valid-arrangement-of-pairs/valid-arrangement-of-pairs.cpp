@@ -1,42 +1,36 @@
 class Solution {
 public:
-    void dfs(int src,vector<int>&eularPath,unordered_map<int,vector<int>>&adj){
-        while(!adj[src].empty()){
-            int adjNode=adj[src].back();
-            adj[src].pop_back();
-            dfs(adjNode,eularPath,adj);
+    vector<int>path;
+    void DFS(int start,unordered_map<int,vector<int>>&adj){
+        while(!adj[start].empty()){
+            int nextNode = *adj[start].begin();
+            adj[start].erase(adj[start].begin());
+            DFS(nextNode,adj);
         }
-        eularPath.push_back(src);
+        path.push_back(start);
     }
     vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
+        unordered_map<int,int>indegree,outdegree;
         unordered_map<int,vector<int>>adj;
-        unordered_map<int,int>indeg,outdeg;
-        // prepare adjlist and indegree and outdegree
-        for(vector<int>&pair:pairs){
-            int u=pair[0];
-            int v=pair[1];
-            adj[u].push_back(v);
-            indeg[v]++;
-            outdeg[u]++;
+        for(auto &pair:pairs){
+            adj[pair[0]].push_back(pair[1]);
+            indegree[pair[1]]++;
+            outdegree[pair[0]]++;
         }
 
-        // find startnode using outdeg[node]-indeg[node]=1;
-        int startNode=pairs[0][0];
+        // find start node
+        int startNode = pairs[0][0];
         for(auto &it:adj){
-            int node=it.first;
-            if(outdeg[node]-indeg[node]==1) {
-                startNode=node;
-                break;
-            }
+            int node = it.first;
+            if(outdegree[node]-indegree[node] == 1) startNode = node;
         }
-        // dfs traversal
-        vector<int>eularPath;
-        dfs(startNode,eularPath,adj);
 
-        reverse(begin(eularPath),end(eularPath));
-        vector<vector<int>>ans;
-        for(int i=0;i<eularPath.size()-1;i++){
-            ans.push_back({eularPath[i],eularPath[i+1]});
+        DFS(startNode,adj);
+
+        reverse(begin(path),end(path));
+        vector<vector<int>> ans;
+        for(int i=0;i<path.size()-1;i++){
+            ans.push_back({path[i],path[i+1]});
         }
         return ans;
     }
