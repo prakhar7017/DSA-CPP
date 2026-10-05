@@ -1,6 +1,6 @@
 class Solution {
 public:
-    vector<char>chars={'A','C','G','T'};
+    vector<char>chars={'A', 'C', 'G','T'};
     int BFS(string startGene, string endGene, vector<string>& bank){
         unordered_set<string>st(begin(bank),end(bank));
         queue<string>q;
@@ -9,12 +9,11 @@ public:
         while(!q.empty()){
             int size = q.size();
             mutations++;
-            for(int i=0;i<size;i++){
+            while(size--){
                 string curr = q.front(); q.pop();
-                for(int i=0;i<curr.length();i++){
+                for(int i=0;i<curr.size();i++){
                     char ori = curr[i];
-                    for(char ch:chars){
-                        if(ch == ori) continue;
+                    for(char &ch:chars){
                         curr[i]=ch;
                         if(st.count(curr)){
                             if(curr == endGene) return mutations;
@@ -29,6 +28,6 @@ public:
         return -1;
     }
     int minMutation(string startGene, string endGene, vector<string>& bank) {
-        return BFS(startGene, endGene, bank);    
+        return BFS(startGene, endGene,bank);
     }
 };
