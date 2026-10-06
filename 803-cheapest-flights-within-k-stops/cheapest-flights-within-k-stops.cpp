@@ -1,45 +1,37 @@
 class Solution {
 public:
-    typedef pair<int, int> P;
-    int solveUsinfBFS(int n, int src, int dest, int k,
-                      unordered_map<int, vector<P>>& adj) {
-        queue<P> q;
-        q.push({src, 0});
-        vector<int> dis(n, INT_MAX);
-        dis[src]=0;
+    typedef pair<int,int>P;
+    int BFS(int n,int src,int dst,int k,unordered_map<int,vector<P>>&adj){
+        vector<int>result(n,INT_MAX);
+        queue<P>q;
+        q.push({0,src});
+        result[src]=0;
         int steps = 0;
-        while (!q.empty() && steps <= k) {
+        while(!q.empty() && steps<=k){
             int size = q.size();
-            while (size--) {
-                int currNode = q.front().first;
-                int currCost = q.front().second;
+            steps++;
+            while(size--){
+                int curr = q.front().second;
+                int d    = q.front().first;
                 q.pop();
-                for(auto &it:adj[currNode]){
-                    int nbrNode = it.first;
-                    int nbrCost = it.second;
-
-                    if(currCost+nbrCost<dis[nbrNode]){
-                        dis[nbrNode]=currCost+nbrCost;
-                        q.push({nbrNode,currCost+nbrCost});
+                for(auto [v,wt]:adj[curr]){
+                    if(d+wt<result[v]){
+                        result[v]=d+wt;
+                        q.push({d+wt,v});
                     }
                 }
             }
-            steps++;
         }
-
-        return dis[dest];
+        return result[dst] ==  INT_MAX ? -1 : result[dst];
     }
-    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst,
-                          int k) {
-        unordered_map<int, vector<P>> adj;
-
-        for (vector<int>& flight : flights) {
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        unordered_map<int,vector<P>>adj;
+        for(auto &flight:flights){
             int u = flight[0];
             int v = flight[1];
-            int cost = flight[2];
-            adj[u].push_back({v, cost});
+            int wt = flight[2];
+            adj[u].push_back({v,wt});
         }
-        int ans = solveUsinfBFS(n, src, dst, k, adj);
-        return ans == INT_MAX ? -1 : ans;
+        return BFS(n,src,dst,k,adj);
     }
 };
