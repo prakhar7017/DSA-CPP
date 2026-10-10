@@ -11,7 +11,7 @@ public:
     }
     int solveUsingBottomUp(int idx, int end, vector<int>& nums) {
         int n = nums.size();
-        vector<int> dp(n+2, 0);
+        vector<int> dp(n + 2, 0);
 
         for (int i = end; i >= idx; i--) {
             int include = nums[i] + dp[i + 2];
@@ -19,6 +19,20 @@ public:
             dp[i] = max(include, exclude);
         }
         return dp[idx];
+    }
+    int solveUsingSpaceOptimised(int idx, int end, vector<int>& nums) {
+        int n = nums.size();
+        int next2=0;
+        int next1=0;
+
+        for (int i = end; i >= idx; i--) {
+            int include = nums[i] + next2;
+            int exclude = next1;
+            int curr = max(include, exclude);
+            next2=next1;
+            next1=curr;
+        }
+        return next1;
     }
     int rob(vector<int>& nums) {
         int n = nums.size();
@@ -28,7 +42,7 @@ public:
             return max(nums[0], nums[1]);
         vector<int> dp1(n + 1, -1);
         vector<int> dp2(n + 1, -1);
-        return max(solveUsingBottomUp(0, n - 2, nums),
-                   solveUsingBottomUp(1, n - 1, nums));
+        return max(solveUsingSpaceOptimised(0, n - 2, nums),
+                   solveUsingSpaceOptimised(1, n - 1, nums));
     }
 };
