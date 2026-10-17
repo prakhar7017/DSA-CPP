@@ -1,61 +1,24 @@
 class Solution {
 public:
-    bool solve(int index, int target, vector<int>& nums) {
-        // basecase
-        if (target == 0)
-            return 1;
-        if (index >= nums.size())
-            return 0;
-
-        int exclude = solve(index + 1, target, nums);
-        int include = 0;
-        if (nums[index] <= target)
-            include = solve(index + 1, target - nums[index], nums);
-        return include || exclude;
-    }
-
-    bool solveUsingTab(int target,vector<int>& nums){
-        int n=nums.size();
-        vector<vector<bool>>dp(n,vector<bool>(target+1,false));
-        for(int i=0;i<n;i++) dp[i][0]=true;
-        if(nums[0]<=target) dp[0][nums[0]]=true;
-        for(int i=1;i<n;i++){
-            for(int tar=1;tar<=target;tar++){
-                bool exclude=dp[i-1][tar];
-                bool include=false;
-                if(nums[i]<=tar) include=dp[i-1][tar-nums[i]];
-                dp[i][tar]=(include || exclude);
-            }
+    int n;
+    bool solve(int idx,int x,vector<int>&nums,vector<vector<int>>&dp){
+        if(x == 0) return true;
+        if(idx>=n) return false;
+        if(dp[idx][x]!=-1) return dp[idx][x];
+        bool include =false;
+        if(x>=nums[idx]){
+            include = solve(idx+1,x-nums[idx],nums,dp);
         }
-        return dp[n-1][target];
-    }
-
-    bool solveUsingSpaceOp(int target,vector<int>& nums){
-        int n=nums.size();
-        vector<bool>prev(target+1,false);
-        prev[0]=true;
-        if(nums[0]<=target) prev[nums[0]]=true;
-        for(int i=1;i<n;i++){
-            vector<bool>curr(target+1,false);
-            curr[0]=true;
-            for(int tar=1;tar<=target;tar++){
-                bool exclude=prev[tar];
-                bool include=false;
-                if(nums[i]<=tar) include=prev[tar-nums[i]];
-                curr[tar]=(include || exclude);
-            }
-            prev=curr;
-        }
-        return prev[target];
+        bool exclude = solve(idx+1,x,nums,dp);
+        return dp[idx][x]=include||exclude;
     }
     bool canPartition(vector<int>& nums) {
-        int n = nums.size();
-        int sum = accumulate(begin(nums), end(nums),0);
-        if (sum & 1)
-            return false;
-        int targetSum = sum >> 1;
-        // return solve(0, targetSum, nums);
-        // return solveUsingTab(targetSum,nums);
-        return solveUsingSpaceOp(targetSum,nums);
+        n = nums.size();
+        int s = accumulate(begin(nums),end(nums),0);
+        if(s%2!=0) return false;
+
+        int x = s/2;
+        vector<vector<int>>dp(n+1,vector<int>(s+1,-1));
+        return solve(0,x,nums,dp); 
     }
 };
