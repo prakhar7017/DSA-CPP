@@ -14,6 +14,22 @@ public:
         }
         return dp[idx]=false;
     }
+    bool bottomUp(int idx,string&s,unordered_set<string>&st){
+        int n = s.length();
+        vector<bool>dp(n+1,false);
+
+        dp[n]=true;
+        for(int idx = n-1;idx>=0;idx--){
+            for(int l=1;l<=n-idx;l++){
+                string temp = s.substr(idx,l);
+                if(st.count(temp) && dp[idx+l]) {
+                    dp[idx]=true;
+                    break;
+                }
+            }
+        }
+        return dp[0];
+    }
     bool wordBreak(string s, vector<string>& wordDict) {
         n=s.length();
         unordered_set<string>st;
@@ -21,6 +37,6 @@ public:
         for(string &word:wordDict){
             st.insert(word);
         }
-        return solve(0,s,st,dp);
+        return bottomUp(0,s,st);
     }
 };
