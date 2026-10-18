@@ -2,7 +2,15 @@ class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
         unordered_set<string>st(begin(wordList),end(wordList));
+        unordered_map<string,vector<string>>mp;
         queue<string>q;
+        for(string &word:wordList){
+            for(int i=0;i<word.length();i++){
+                string pattern = word;
+                pattern[i]='*';
+                mp[pattern].push_back(word);
+            }
+        }
         q.push(beginWord);
         int step = 0;
         while(!q.empty()){
@@ -13,14 +21,13 @@ public:
                 q.pop();
                 if(curr == endWord) return step;
                 for(int i=0;i<curr.length();i++){
-                    char ori = curr[i];
-                    for(int j='a';j<='z';j++){
-                        curr[i]=j;
-                        if(st.count(curr)){
-                            q.push(curr);
-                            st.erase(curr);
+                    string pattern = curr;
+                    pattern[i]='*';
+                    for(string &next:mp[pattern]){
+                        if(st.count(next)){
+                            st.erase(next);
+                            q.push(next);
                         }
-                        curr[i]=ori;
                     }
                 }
             }
