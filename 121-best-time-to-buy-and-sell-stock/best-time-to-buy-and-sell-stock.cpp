@@ -2,14 +2,13 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        int maxProfit=0;
-        int minPrice=prices[0];
-        for(int day=1;day<n;day++){
-            int todayPrice = prices[day];
-            int todayProfit = todayPrice-minPrice;
-            maxProfit=max(maxProfit,todayProfit);
-            minPrice = min(minPrice,todayPrice);
+        int mini = prices[0];
+        int profit = 0;
+        for(int sellDay = 1;sellDay<n;sellDay++){
+            int ajjKadiff = prices[sellDay]-mini;
+            profit = max(profit,ajjKadiff);
+            mini = min(mini,prices[sellDay]);
         }
-        return maxProfit;
+        return profit;
     }
 };
