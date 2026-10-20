@@ -1,67 +1,18 @@
 class Solution {
 public:
-    int solveUsingRec(int idx1, int idx2, string& text1, string& text2,
-                      vector<vector<int>>& dp) {
-        // basecase
-        if (idx1 < 0 || idx2 < 0)
-            return 0;
-
-        if (dp[idx1][idx2] != -1)
-            return dp[idx1][idx2];
-        if (text1[idx1] == text2[idx2])
-            return dp[idx1][idx2] =
-                       1 + solveUsingRec(idx1 - 1, idx2 - 1, text1, text2, dp);
-
-        return dp[idx1][idx2] =
-                   max(solveUsingRec(idx1 - 1, idx2, text1, text2, dp),
-                       solveUsingRec(idx1, idx2 - 1, text1, text2, dp));
-    }
-    int solveUsingTab(string& t1, string& t2) {
-        int n = t1.length();
-        int m = t2.length();
-        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
-        // basecase
-        for (int i = 0; i <= n; i++)
-            dp[i][0] = 0;
-        for (int j = 0; j <= m; j++)
-            dp[0][j] = 0;
-
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                if (t1[i-1] == t2[j-1])
-                    dp[i][j] = 1 + dp[i - 1][j - 1];
-                else
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-            }
+    int m,n;
+    int solveUsingMemo(int i,int j,string&t1, string&t2,vector<vector<int>>&dp){
+        if(i>=m || j>=n) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(t1[i]==t2[j]){
+            return dp[i][j]=1 + solveUsingMemo(i+1,j+1,t1,t2,dp);
         }
-
-        return dp[n][m];
-    }
-    int solveUsingSpace(string& t1, string& t2) {
-        int n = t1.length();
-        int m = t2.length();
-        vector<int>prev(m+1,0),curr(m+1,0);
-        // for (int j = 0; j <= m; j++)
-        //     prev[j] = 0;
-
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                if (t1[i-1] == t2[j-1])
-                    curr[j] = 1 + prev[j - 1];
-                else
-                    curr[j] = max(prev[j], curr[j - 1]);
-            }
-            prev=curr;
-        }
-
-        return prev[m];
+        return dp[i][j]=max(solveUsingMemo(i+1,j,t1,t2,dp),solveUsingMemo(i,j+1,t1,t2,dp));
     }
     int longestCommonSubsequence(string text1, string text2) {
-        int n = text1.length();
-        int m = text2.length();
-        // vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
-        // return solveUsingRec(n - 1, m - 1, text1, text2, dp);
-        // return solveUsingTab(text1, text2);
-        return solveUsingSpace(text1, text2);
+        m = text1.length();
+        n = text2.length();
+        vector<vector<int>>dp(m+1,vector<int>(n+1,-1));
+        return solveUsingMemo(0,0,text1,text2,dp);
     }
 };
