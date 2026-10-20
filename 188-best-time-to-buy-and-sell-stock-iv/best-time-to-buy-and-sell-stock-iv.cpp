@@ -21,13 +21,13 @@ public:
         }
         return dp[idx][canBuy][limit] = profit;
     }
-    int solveUsingBottomUp(vector<int>& prices) {
+    int solveUsingBottomUp(int k,vector<int>& prices) {
         int n = prices.size();
         vector<vector<vector<int>>> dp(
             n + 1, vector<vector<int>>(2, vector<int>(3, 0)));
         for (int idx = n - 1; idx >= 0; idx--) {
             for (int canBuy = 0; canBuy <= 1; canBuy++) {
-                for (int limit = 1; limit <= 2; limit++) {
+                for (int limit = 1; limit <= k; limit++) {
                     int profit = 0;
                     if (canBuy) {
                         int buykaro = -prices[idx] + dp[idx + 1][0][limit];
@@ -44,13 +44,13 @@ public:
         }
         return dp[0][1][2];
     }
-    int solveUsingSpaceOptmised(vector<int>& prices) {
+    int solveUsingSpaceOptmised(int k,vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> curr(2, vector<int>(3, 0));
-        vector<vector<int>> next(2, vector<int>(3, 0));
+        vector<vector<int>> curr(2, vector<int>(k+1, 0));
+        vector<vector<int>> next(2, vector<int>(k+1, 0));
         for (int idx = n - 1; idx >= 0; idx--) {
             for (int canBuy = 0; canBuy <= 1; canBuy++) {
-                for (int limit = 1; limit <= 2; limit++) {
+                for (int limit = 1; limit <= k; limit++) {
                     int profit = 0;
                     if (canBuy) {
                         int buykaro = -prices[idx] + next[0][limit];
@@ -66,14 +66,14 @@ public:
             }
             next = curr;
         }
-        return next[1][2];
+        return next[1][k];
     }
     int maxProfit(int k, vector<int>& prices) {
         n = prices.size();
         int canBuy = 1; // 1:allowed and 0:not allowed
         vector<vector<vector<int>>> dp(
             n + 1, vector<vector<int>>(2, vector<int>(k+1, -1)));
-        return solveUsingMemo(0, 1, k, prices, dp);
-        // return solveUsingSpaceOptmised(prices);
+        // return solveUsingMemo(0, 1, k, prices, dp);
+        return solveUsingSpaceOptmised(k,prices);
     }
 };
