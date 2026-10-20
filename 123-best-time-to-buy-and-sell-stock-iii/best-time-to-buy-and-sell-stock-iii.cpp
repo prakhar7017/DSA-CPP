@@ -1,48 +1,76 @@
 class Solution {
 public:
-    int solve(int idx, int buy, int cap, vector<int>& prices,
-              vector<vector<vector<int>>>& dp) {
-        if (idx >= prices.size() || cap == 0)
-            return 0;
-        if (dp[idx][buy][cap] != -1)
-            return dp[idx][buy][cap];
+    int n;
+    int solveUsingMemo(int idx, int canBuy, int limit, vector<int>& prices,
+                       vector<vector<vector<int>>>&dp) {
+        if (idx >= n || limit == 0)
+            return 0;   
+        if (dp[idx][canBuy][limit] != -1)
+            return dp[idx][canBuy][limit];
         int profit = 0;
-        if (buy) {
-            profit = max(-prices[idx] + solve(idx + 1, 0, cap, prices, dp),
-                         0 + solve(idx + 1, 1, cap, prices, dp));
+        if (canBuy) {
+            int buykaro = -prices[idx] + solveUsingMemo(idx + 1, 0, limit, prices, dp);
+            int ignore = 0 + solveUsingMemo(idx + 1, 1, limit, prices, dp);
+            profit = max(buykaro, ignore);
         } else {
-            profit = max(prices[idx] + solve(idx + 1, 1, cap - 1, prices, dp),
-                         0 + solve(idx + 1, 0, cap, prices, dp));
+            int sellkaro =
+                +prices[idx] + solveUsingMemo(idx + 1, 1,limit-1, prices, dp);
+            int ignore = 0 + solveUsingMemo(idx + 1, 0, limit, prices, dp);
+            profit = max(sellkaro, ignore);
         }
-        return dp[idx][buy][cap] = profit;
+        return dp[idx][canBuy][limit] = profit;
     }
-
-    int solveBottomUp(vector<int>& prices) {
+    int solveUsingBottomUp(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<vector<int>>> dp(
-            n + 1, vector<vector<int>>(2, vector<int>(3, 0)));
-        int profit = 0;
+        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
         for (int idx = n - 1; idx >= 0; idx--) {
-            for (int buy = 0; buy <= 1; buy++) {
-                for (int cap = 1; cap <= 2; cap++) {
-                    if (buy) {
-                        profit = max(-prices[idx] + dp[idx + 1][0][cap],
-                                     0 + dp[idx + 1][1][cap]);
-                    } else {
-                        profit = max(prices[idx] + dp[idx + 1][1][cap - 1],
-                                     0 + dp[idx + 1][0][cap]);
-                    }
-                    dp[idx][buy][cap]=profit;
+            for (int canBuy = 0; canBuy <=1; canBuy++) {
+                int profit = 0;
+                if (canBuy) {
+                    int buykaro = -prices[idx] + dp[idx + 1][0];
+                    int ignore = 0 + dp[idx + 1][1];
+                    profit = max(buykaro, ignore);
+                } else {
+                    int sellkaro = +prices[idx] + dp[idx + 1][1];
+                    int ignore = 0 + dp[idx + 1][0];
+                    profit = max(sellkaro, ignore);
                 }
+                dp[idx][canBuy]=profit;
             }
         }
-        return dp[0][1][2];
+        return dp[0][1];
+    }
+    int solveUsingSpaceOptmised(vector<int>& prices) {
+        int n = prices.size();
+        vector<int>curr(2,0);
+        vector<int>next(2,0);
+        for (int idx = n - 1; idx >= 0; idx--) {
+            for (int canBuy = 0; canBuy <=1; canBuy++) {
+                int profit = 0;
+                if (canBuy) {
+                    int buykaro = -prices[idx] + next[0];
+                    int ignore = 0 + next[1];
+                    profit = max(buykaro, ignore);
+                } else {
+                    int sellkaro = +prices[idx] + next[1];
+                    int ignore = 0 + next[0];
+                    profit = max(sellkaro, ignore);
+                }
+                curr[canBuy]=profit;
+            }
+            next = curr;
+        }
+        return next[1];
     }
     int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<vector<int>>> dp(
-            n, vector<vector<int>>(2, vector<int>(3, -1)));
-        // return solve(0, 1, 2, prices, dp);
-        return solveBottomUp(prices);
+        n = prices.size();
+        int canBuy = 1; // 1:allowed and 0:not allowed
+        int limit = 2;
+
+        vector<vector<vector<int>>>dp(n+1,
+            vector<vector<int>>(2,vector<int>(3,-1))
+        );
+        return solveUsingMemo(0, 1, limit, prices, dp);
+        // return solveUsingSpaceOptmised(prices);
     }
 };
