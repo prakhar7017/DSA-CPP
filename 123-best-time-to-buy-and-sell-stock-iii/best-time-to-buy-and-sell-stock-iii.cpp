@@ -34,7 +34,7 @@ public:
                         int ignore = 0 + dp[idx + 1][1][limit];
                         profit = max(buykaro, ignore);
                     } else {
-                        int sellkaro = +prices[idx] + dp[idx + 1][1][limit-1];
+                        int sellkaro = +prices[idx] + dp[idx + 1][1][limit - 1];
                         int ignore = 0 + dp[idx + 1][0][limit];
                         profit = max(sellkaro, ignore);
                     }
@@ -46,25 +46,27 @@ public:
     }
     int solveUsingSpaceOptmised(vector<int>& prices) {
         int n = prices.size();
-        vector<int> curr(2, 0);
-        vector<int> next(2, 0);
+        vector<vector<int>> curr(2, vector<int>(3, 0));
+        vector<vector<int>> next(2, vector<int>(3, 0));
         for (int idx = n - 1; idx >= 0; idx--) {
             for (int canBuy = 0; canBuy <= 1; canBuy++) {
-                int profit = 0;
-                if (canBuy) {
-                    int buykaro = -prices[idx] + next[0];
-                    int ignore = 0 + next[1];
-                    profit = max(buykaro, ignore);
-                } else {
-                    int sellkaro = +prices[idx] + next[1];
-                    int ignore = 0 + next[0];
-                    profit = max(sellkaro, ignore);
+                for (int limit = 1; limit <= 2; limit++) {
+                    int profit = 0;
+                    if (canBuy) {
+                        int buykaro = -prices[idx] + next[0][limit];
+                        int ignore = 0 + next[1][limit];
+                        profit = max(buykaro, ignore);
+                    } else {
+                        int sellkaro = +prices[idx] + next[1][limit-1];
+                        int ignore = 0 + next[0][limit];
+                        profit = max(sellkaro, ignore);
+                    }
+                    curr[canBuy][limit] = profit;
                 }
-                curr[canBuy] = profit;
             }
             next = curr;
         }
-        return next[1];
+        return next[1][2];
     }
     int maxProfit(vector<int>& prices) {
         n = prices.size();
@@ -74,6 +76,6 @@ public:
         vector<vector<vector<int>>> dp(
             n + 1, vector<vector<int>>(2, vector<int>(3, -1)));
         // return solveUsingMemo(0, 1, limit, prices, dp);
-        return solveUsingBottomUp(prices);
+        return solveUsingSpaceOptmised(prices);
     }
 };
