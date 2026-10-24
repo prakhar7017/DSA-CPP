@@ -33,10 +33,28 @@ public:
         }
         return dp[0][amount];
     }
+    int solveUsingSpace(int amount, vector<int>& coins) {
+        vector<int>curr(amount + 1, 0);
+        vector<int>next(amount + 1, 0);
+        curr[0]=1;
+        next[0]=1;
+        for (int idx = n - 1; idx >= 0; idx--) {
+            for (int amt = 0; amt <= amount; amt++) {
+                long long include = 0;
+                if (coins[idx] <= amt) {
+                    include = curr[amt - coins[idx]];
+                }
+                long long exclude = next[amt];
+                curr[amt] = include + exclude;
+            }
+            next = curr;
+        }
+        return next[amount];
+    }
     int change(int amount, vector<int>& coins) {
         n = coins.size();
         vector<vector<int>> dp(n + 1, vector<int>(amount + 1, -1));
         // return solveUsingMemo(0, amount, coins, dp);
-        return solveUsingTab(amount,coins);
+        return solveUsingSpace(amount,coins);
     }
 };
