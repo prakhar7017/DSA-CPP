@@ -1,48 +1,24 @@
 class Solution {
 public:
-    int solveUsingRec(int index, int buy, vector<int>& prices,
-                      vector<vector<int>>& dp) {
-        if (index >= prices.size())
-            return 0;
-
-        if (dp[index][buy] != -1)
-            return dp[index][buy];
-
+    int n;
+    int solveUsingMemo(int idx,int canBuy,vector<int>&prices,vector<vector<int>>&dp){
+        if(idx>=n) return 0;
+        if(dp[idx][canBuy]!=-1) return dp[idx][canBuy];
         int profit = 0;
-        if (buy) {
-            profit =
-                max(-prices[index] + solveUsingRec(index + 1, 0, prices, dp),
-                    0 + solveUsingRec(index + 1, 1, prices, dp));
-        } else {
-            profit =
-                max(prices[index] + solveUsingRec(index + 2, 1, prices, dp),
-                    0 + solveUsingRec(index + 1, 0, prices, dp));
+        if(canBuy){
+            int buy = -prices[idx]+solveUsingMemo(idx+1,0,prices,dp);
+            int ignore = 0 + solveUsingMemo(idx+1,1,prices,dp);
+            profit = max(buy,ignore);
+        }else{
+            int sell = prices[idx] + solveUsingMemo(idx+2,1,prices,dp);
+            int ignore = 0 + solveUsingMemo(idx+1,0,prices,dp);
+            profit = max(sell,ignore);
         }
-        return dp[index][buy] = profit;
-    }
-
-    int solveUsingTab(vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<int>> dp(n + 2, vector<int>(2, 0));
-        int profit = 0;
-        for (int index = n - 1; index >= 0; index--) {
-            for (int buy = 0; buy <= 1; buy++) {
-                if (buy) {
-                    profit = max(-prices[index] + dp[index + 1][0],
-                                 0 + dp[index + 1][1]);
-                } else {
-                    profit = max(prices[index] + dp[index + 2][1],
-                                 0 + dp[index + 1][0]);
-                }
-                dp[index][buy]=profit;
-            }
-        }
-        return dp[0][1];
+        return dp[idx][canBuy] = profit;
     }
     int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
-        // return solveUsingRec(0, 1, prices, dp);
-        return solveUsingTab(prices);
+        n = prices.size();
+        vector<vector<int>>dp(n+1,vector<int>(2,-1));
+        return solveUsingMemo(0,1,prices,dp);
     }
 };
