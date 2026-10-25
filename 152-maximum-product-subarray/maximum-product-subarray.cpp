@@ -4,9 +4,8 @@ public:
         int n = nums.size();
         int ans=nums[0];
         for(int i=0;i<n;i++){
-            int product = nums[i];
-            ans = max(ans,product);
-            for(int j=i+1;j<n;j++){
+            int product = 1;
+            for(int j=i;j<n;j++){
                 product = product*nums[j];
                 ans = max(ans,product);
             }
