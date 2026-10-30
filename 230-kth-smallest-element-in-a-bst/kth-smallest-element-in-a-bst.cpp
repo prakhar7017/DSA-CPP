@@ -48,7 +48,34 @@ public:
         inorder(root,i,k);
         return ans->val;
     }
+    int solveUsingMorrisTraversal(TreeNode* root,int k){
+        if(root==nullptr) return 0;
+        TreeNode* curr = root;
+        int i=0;
+        int ans=0;
+        while(curr!=nullptr){
+            if(curr->left == nullptr){
+                // arr.push_back(curr->val);
+                i++;
+                if(i==k) {
+                    ans = curr->val;
+                    break;
+                }
+                curr = curr->right;
+            }else{
+                TreeNode* leftChild = curr->left;
+                while(leftChild->right!=nullptr){
+                    leftChild = leftChild->right;
+                }
+                leftChild->right = curr;
+                TreeNode* temp = curr;
+                curr = curr->left;
+                temp->left = nullptr;
+            }
+        }
+        return ans;
+    }
     int kthSmallest(TreeNode* root, int k) {
-        return solveUsingWithoutArr(root, k);
+        return solveUsingMorrisTraversal(root, k);
     }
 };
