@@ -31,19 +31,48 @@ public:
     }
     vector<vector<string>> solveUsingBetter(vector<string>& strs) {
         int n = strs.size();
-        unordered_map<string,vector<string>>mp;
-        for(string &str:strs){
+        unordered_map<string, vector<string>> mp;
+        for (string& str : strs) {
             string temp = str;
-            sort(begin(temp),end(temp));
+            sort(begin(temp), end(temp));
             mp[temp].push_back(str);
         }
         vector<vector<string>> ans;
-        for(auto &it:mp){
+        for (auto& it : mp) {
+            ans.push_back(it.second);
+        }
+        return ans;
+    }
+    string generate(string &str){
+        int arr[26]={0};
+        for(char &ch:str){
+            arr[ch-'a']++;
+        }
+
+        string newWord ="";
+
+        for(int i=0;i<26;i++){
+            int freq = arr[i];
+            if(freq>0){
+                newWord+=string(freq,i+'a');
+            }
+        }
+        return newWord;
+    }
+    vector<vector<string>> solveUsingOptimised(vector<string>& strs) {
+        int n = strs.size();
+        unordered_map<string, vector<string>> mp;
+        for (string& str : strs) {
+            string sortedWord = generate(str); 
+            mp[sortedWord].push_back(str);
+        }
+        vector<vector<string>> ans;
+        for (auto& it : mp) {
             ans.push_back(it.second);
         }
         return ans;
     }
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        return solveUsingBetter(strs);
+        return solveUsingOptimised(strs);
     }
 };
