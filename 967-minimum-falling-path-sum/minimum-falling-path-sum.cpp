@@ -1,91 +1,55 @@
 class Solution {
 public:
-    int rows;
-    int cols;
-    vector<vector<int>> directions{{1, -1}, {1, 0}, {1, 1}};
-    bool isSafe(int x, int y) {
-        return x >= 0 && x < rows && y >= 0 && y < cols;
-    }
-    int solve(int x, int y, vector<vector<int>>& m, vector<vector<int>>& dp) {
-        // basecase
-        if (x == rows - 1)
-            return m[x][y];
-        if (dp[x][y] != -1)
-            return dp[x][y];
-        int minAns = INT_MAX;
-        for (vector<int>& dir : directions) {
-            int newX = x + dir[0];
-            int newY = y + dir[1];
-            if (isSafe(newX, newY)) {
-                minAns = min(minAns, solve(newX, newY, m, dp));
-            }
+    int m;
+    int n;
+    int solveUsingMemo(int row,int col,vector<vector<int>>& matrix,vector<vector<int>>&dp){
+        if(row == m-1) return matrix[row][col];
+        if(dp[row][col]!=-1) return dp[row][col];
+        int mini = INT_MAX;
+        int sum = matrix[row][col];
+        // if(row+1<m && col-1>=0) mini = min(mini,sum + solveUsingMemo(row+1,col-1,matrix,dp));
+        // if(row+1<m) mini = min(mini,sum + solveUsingMemo(row+1,col,matrix,dp));
+        // if (row+1<m && col+1<n) mini = min(mini,sum + solveUsingMemo(row+1,col+1,matrix,dp));
+
+        for(int shift = -1;shift<=1;shift++){
+            if(row+1<m && col+shift>=0 && col+shift<n)
+                mini = min(mini,sum + solveUsingMemo(row+1,col+shift,matrix,dp));
         }
-        return dp[x][y] = m[x][y] + minAns;
+        return dp[row][col]= mini;
     }
-    int solveUsingTab(vector<vector<int>>& m) {
-        vector<vector<int>> dp(rows, vector<int>(cols, 0));
+    int solveUsingBottomUp(vector<vector<int>>& matrix){
+        vector<vector<int>>t(m,vector<int>(n));
 
-        for (int col = 0; col < cols; col++)
-            dp[rows - 1][col] = m[rows - 1][col];
+        for(int col=0;col<n;col++){
+            t[0][col]=matrix[0][col];
+        }
 
-        for (int row = rows - 2; row >= 0; row--) {
-            for (int col = 0; col < cols; col++) {
-                if (col == 0)
-                    dp[row][col] = m[row][col] +
-                                   min(dp[row + 1][col], dp[row + 1][col + 1]);
-                else if (col == cols - 1)
-                    dp[row][col] = m[row][col] +
-                                   min(dp[row + 1][col - 1], dp[row + 1][col]);
-                else
-                    dp[row][col] = m[row][col] + min(dp[row + 1][col - 1],
-                                                     min(dp[row + 1][col],
-                                                         dp[row + 1][col + 1]));
+        for(int row = 1;row<m;row++){
+            for(int col=0;col<n;col++){
+                int a = INT_MAX;
+                int b = INT_MAX;
+                if(row-1>=0 && col-1>=0) a = t[row-1][col-1];
+                if(row-1>=0 && col+1<n)  b = t[row-1][col+1];
+                t[row][col] = matrix[row][col]+ min({t[row-1][col],a,b});
             }
         }
 
         int ans = INT_MAX;
-        for (int col = 0; col < cols; col++) {
-            ans = min(ans, dp[0][col]);
-        }
-        return ans;
-    }
-    int solveUsingSpaceOp(vector<vector<int>>& m) {
-        vector<int> prev(cols, 0);
-
-        for (int col = 0; col < cols; col++)
-            prev[col] = m[rows - 1][col];
-
-        for (int row = rows - 2; row >= 0; row--) {
-            vector<int> curr(cols, 0);
-            for (int col = 0; col < cols; col++) {
-                if (col == 0)
-                    curr[col] = m[row][col] + min(prev[col], prev[col + 1]);
-                else if (col == cols - 1)
-                    curr[col] = m[row][col] + min(prev[col - 1], prev[col]);
-                else
-                    curr[col] =
-                        m[row][col] +
-                        min(prev[col - 1], min(prev[col], prev[col + 1]));
-            }
-            prev=curr;
-        }
-
-        int ans = INT_MAX;
-        for (int col = 0; col < cols; col++) {
-            ans = min(ans, prev[col]);
+        for(int col=0;col<n;col++){
+            ans = min(ans,t[m-1][col]);
         }
         return ans;
     }
     int minFallingPathSum(vector<vector<int>>& matrix) {
-        rows = matrix.size();
-        cols = matrix[0].size();
-        // int minAns = INT_MAX;
-        // vector<vector<int>> dp(rows + 1, vector<int>(cols + 1, -1));
-        // for (int col = 0; col < cols; col++) {
-        //     minAns = min(minAns, solve(0, col, matrix, dp));
+        m = matrix.size();
+        n = matrix[0].size();
+        // int result = INT_MAX;
+        // int row=0;
+        // vector<vector<int>>dp(m,vector<int>(n,-1));
+        // for(int col=0;col<n;col++){
+        //     result = min(result,solveUsingMemo(row,col,matrix,dp));
         // }
-        // return minAns;
-        // return solveUsingTab(matrix);
-        return solveUsingSpaceOp(matrix);
+        // return result;
+        return solveUsingBottomUp(matrix);
     }
 };
