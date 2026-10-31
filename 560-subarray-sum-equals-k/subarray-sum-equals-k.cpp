@@ -1,34 +1,21 @@
 class Solution {
 public:
-    int solveUsingBruteForce(vector<int>& nums, int k) {
+    int solveUsingOptimal(vector<int>& nums, int k){
         int n = nums.size();
-        int ans = 0;
-        for (int s = 0; s < n; s++) {
-            int sum = 0;
-            for (int e = s; e < n; e++) {
-                sum += nums[e];
-                if (sum == k)
-                    ans++;
+        unordered_map<int,int>mp; //{cs,count};
+        int cs = 0;
+        mp.insert({cs,1});
+        int ans=0;
+        for(int i=0;i<n;i++){
+            cs+=nums[i];
+            if(mp.find(cs-k)!=mp.end()){
+                ans+=mp[cs-k];
             }
-        }
-        return ans;
-    }
-    int solveUsingOptimal(vector<int>& nums, int k) {
-        int n = nums.size();
-        unordered_map<int, int> mp;
-        int ans = 0;
-        int cumSum = 0;
-        mp[cumSum]++;
-        for (int i = 0; i < n; i++) { // n
-            cumSum += nums[i];
-            if (mp.find(cumSum - k) != mp.end()) {
-                ans += mp[cumSum - k];
-            }
-            mp[cumSum]++;
+            mp[cs]++;
         }
         return ans;
     }
     int subarraySum(vector<int>& nums, int k) {
-        return solveUsingOptimal(nums, k);
+        return solveUsingOptimal(nums,k);
     }
 };
