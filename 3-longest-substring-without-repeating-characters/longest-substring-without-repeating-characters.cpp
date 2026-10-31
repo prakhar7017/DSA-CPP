@@ -26,23 +26,23 @@ public:
         int startIndex =0;
         int l=0;
         int r=0;
-        vector<int>arr(n,-1);
+        vector<int>arr(256,-1);
         while(r<n){
             char ch = s[r];
-            if(arr[ch-'a']!=-1){
-                if(arr[ch-'a']>=l) l=arr[ch-'a']+1;
+            if(arr[ch]!=-1){
+                if(arr[ch]>=l) l=arr[ch]+1;
             }
             int len = r-l+1;
             if(len > maxLen){
                 maxLen = len;
                 startIndex = l;
             }
-            arr[ch-'a']=r;
+            arr[ch]=r;
             r++;
         }
         return maxLen;
     }
     int lengthOfLongestSubstring(string s) {
-        return solveUsingBruteForce(s);
+        return solveUsingSlidingWindow(s);
     }
 };
