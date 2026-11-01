@@ -1,52 +1,57 @@
 class LRUCache {
 public:
-    typedef pair<int,int>P;//key,val
-    vector<P>cache; // freash at last and old at front
+    typedef pair<list<int>::iterator,int>P; //{address,value}
+    list<int>dll;
+    unordered_map<int,P>mp;
     int n;
     LRUCache(int capacity) {
         n = capacity;
     }
+
+    void msu(int key){
+        // delete it from it pos
+        dll.erase(mp[key].first);
+        // put in front
+        dll.push_front(key);
+        // update add in map
+        mp[key].first = dll.begin();
+    }
     
     int get(int key) {
-        // look for key 
-        // if exist return and make it most recellty uses
-        // other return -1;
-        for(int i=0;i<cache.size();i++){
-            if(cache[i].first == key){
-                int val = cache[i].second;
-                // delete it fron it pos
-                P temp = cache[i];
-                cache.erase(cache.begin()+i);
-                cache.push_back(temp);
-                // put it at last
-                return val;
-            }
-        }
-        return -1;
+        //check if key exist in map
+        if(mp.find(key) == mp.end()) return -1;
+        msu(key);
+        return mp[key].second;
+        // make msu and return
+        // otherwise return -1
     }
     
     void put(int key, int value) {
-        // look for key
-        // if it exist . update value . and make most recenlty used and retunr
-        for(int i=0;i<cache.size();i++){
-            if(cache[i].first == key){
-                cache.erase(cache.begin()+i);
-                cache.push_back({key,value});
-                return;
-            }
-        }
-
-
-
-        // if not found.
-        if(cache.size() == n){
-            cache.erase(cache.begin());
-            cache.push_back({key,value});
+        // check if ket exist
+        // update value make it msu
+        // and retunr
+        // else
+        // put it intolist
+        // update map
+        // n<0
+        // evist last one
+        // n--
+        if(mp.find(key)!=mp.end()){
+            mp[key].second = value;
+            msu(key);
+            return;
         }else{
-            cache.push_back({key,value});
+            dll.push_front(key);
+            mp[key]={dll.begin(),value};
+            n--;
         }
-        // pust it to cache
-        // check size, if >n pop elase return
+
+        if(n<0){
+            int key_to_delete = dll.back();
+            mp.erase(key_to_delete);
+            dll.pop_back();
+            n++;
+        }
     }
 };
 
