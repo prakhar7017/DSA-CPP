@@ -31,7 +31,24 @@ public:
         }
         return result;
     } 
+    vector<vector<int>> optimal(vector<vector<int>>& intervals){
+        int n = intervals.size();
+        sort(begin(intervals),end(intervals));
+        vector<vector<int>> result;
+        result.push_back(intervals[0]);
+
+        for(int i=1;i<n;i++){
+            int currStart = intervals[i][0];
+            int currEnd   = intervals[i][1];
+            if(currStart<=result.back()[1]){
+                result.back()[1]= max(currEnd,result.back()[1]);
+            }else{
+                result.push_back(intervals[i]);
+            }
+        }
+        return result;
+    }
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        return solveUsingBruteForce(intervals);
+        return optimal(intervals);
     }
 };
