@@ -1,19 +1,38 @@
 class Solution {
 public:
-    int n;  
-    int solveUsingMemo(int curr, int prev,vector<int>& nums,vector<vector<int>>&dp){
-        if(curr>=n) return 0;
-        if(dp[curr][prev+1]!=-1) return dp[curr][prev+1];
-        int include =0;
-        if(prev == -1 || nums[curr]>nums[prev]){
-            include= 1 + solveUsingMemo(curr+1,curr,nums,dp);
+    int n;
+    int solveUsingMemo(int curr, int prev, vector<int>& nums,
+                       vector<vector<int>>& dp) {
+        if (curr >= n)
+            return 0;
+        if (dp[curr][prev + 1] != -1)
+            return dp[curr][prev + 1];
+        int include = 0;
+        if (prev == -1 || nums[curr] > nums[prev]) {
+            include = 1 + solveUsingMemo(curr + 1, curr, nums, dp);
         }
-        int exclude = 0 + solveUsingMemo(curr+1,prev,nums,dp);
-        return dp[curr][prev+1]=max(include,exclude);
+        int exclude = 0 + solveUsingMemo(curr + 1, prev, nums, dp);
+        return dp[curr][prev + 1] = max(include, exclude);
+    }
+    int bottomUp(vector<int>& nums) {
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+
+        for (int curr = n - 1; curr >= 0; curr--) {
+            for (int prev = n - 1; prev >= -1; prev--) {
+                int include = 0;
+                if (prev == -1 || nums[curr] > nums[prev]) {
+                    include = 1 + dp[curr + 1][curr+1];
+                }
+                int exclude = 0 + dp[curr + 1][prev+1];
+                dp[curr][prev + 1] = max(include, exclude);
+            }
+        }
+        return dp[0][0];
     }
     int lengthOfLIS(vector<int>& nums) {
-       n = nums.size();
-       vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-       return solveUsingMemo(0,-1,nums,dp);  
+        n = nums.size();
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
+        // return solveUsingMemo(0, -1, nums, dp);
+        return bottomUp(nums);
     }
 };
