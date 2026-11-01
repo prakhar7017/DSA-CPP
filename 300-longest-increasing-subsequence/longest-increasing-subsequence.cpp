@@ -21,18 +21,35 @@ public:
             for (int prev = n - 1; prev >= -1; prev--) {
                 int include = 0;
                 if (prev == -1 || nums[curr] > nums[prev]) {
-                    include = 1 + dp[curr + 1][curr+1];
+                    include = 1 + dp[curr + 1][curr + 1];
                 }
-                int exclude = 0 + dp[curr + 1][prev+1];
+                int exclude = 0 + dp[curr + 1][prev + 1];
                 dp[curr][prev + 1] = max(include, exclude);
             }
         }
         return dp[0][0];
     }
+    int spaceOptimised(vector<int>& nums) {
+        vector<int>currRow(n + 1, 0);
+        vector<int>nextRow(n + 1, 0);
+
+        for (int curr = n - 1; curr >= 0; curr--) {
+            for (int prev = n - 1; prev >= -1; prev--) {
+                int include = 0;
+                if (prev == -1 || nums[curr] > nums[prev]) {
+                    include = 1 + nextRow[curr + 1];
+                }
+                int exclude = 0 + nextRow[prev + 1];
+                currRow[prev + 1] = max(include, exclude);
+            }
+            nextRow = currRow;
+        }
+        return currRow[0];
+    }
     int lengthOfLIS(vector<int>& nums) {
         n = nums.size();
         vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
         // return solveUsingMemo(0, -1, nums, dp);
-        return bottomUp(nums);
+        return spaceOptimised(nums);
     }
 };
