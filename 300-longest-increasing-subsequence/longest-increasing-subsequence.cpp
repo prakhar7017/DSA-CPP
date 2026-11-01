@@ -46,10 +46,23 @@ public:
         }
         return currRow[0];
     }
+    int BIS(vector<int>& nums){
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            auto it= lower_bound(begin(ans),end(ans),nums[i]);
+
+            if(it == end(ans)){
+                ans.push_back(nums[i]);
+            }else{
+                *it = nums[i];
+            }
+        }
+        return ans.size();
+    }
     int lengthOfLIS(vector<int>& nums) {
         n = nums.size();
         vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
         // return solveUsingMemo(0, -1, nums, dp);
-        return spaceOptimised(nums);
+        return BIS(nums);
     }
 };
