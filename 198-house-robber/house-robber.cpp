@@ -19,8 +19,21 @@ public:
         }
         return dp[0];
     }
+    int solveUsingSpaceOp(vector<int>& nums) {
+        int n = nums.size();
+        int next1=0;
+        int next2=0;
+        for (int idx = n - 1; idx >= 0; idx--) {
+            int include = nums[idx] +next2;
+            int exclude = 0 + next1;
+            int curr = max(include, exclude);
+            next2=next1;
+            next1=curr;
+        }
+        return next1;
+    }
     int rob(vector<int>& nums) {
         vector<int> dp(nums.size() + 1, -1);
-        return solveUsingBottomUp(nums);
+        return solveUsingSpaceOp(nums);
     }
 };
