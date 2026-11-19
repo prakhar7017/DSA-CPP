@@ -1,29 +1,25 @@
 class Solution {
 public:
-    int checkPalindrom(int i,int j, string &s){
-        while(i>=0 && j<s.length() && s[i]==s[j]){
-            i--;
-            j++;
+    int n;
+    bool isPalindrome(int i,int j, string&s){
+        if(i>j) return true;
+        if(s[i]==s[j]){
+            return isPalindrome(i+1,j-1,s);
         }
-        return j-i-1;
-    }
-    string solveUsingExpand(string &s){
-        int n = s.length();
-        int start =0;
-        int end =0;
-        for(int i=0;i<n;i++){
-            int oddAns = checkPalindrom(i,i,s);
-            int evenAns = checkPalindrom(i,i+1,s);
-
-            int len = max(oddAns,evenAns);
-            if(len>(end-start)){
-                start = i-(len-1)/2;
-                end   = i+(len)/2;
-            }
-        }
-        return s.substr(start,end-start+1);
+        return false;
     }
     string longestPalindrome(string s) {
-        return solveUsingExpand(s);
+        n=s.length();
+        int maxLen=0;
+        int startIndex=0;
+        for(int i=0;i<n;i++){
+            for(int j=i;j<n;j++){
+                if(isPalindrome(i,j,s) && j-i+1>maxLen){
+                    maxLen = j-i+1;
+                    startIndex = i;
+                }
+            }
+        }
+        return s.substr(startIndex,maxLen);
     }
 };
