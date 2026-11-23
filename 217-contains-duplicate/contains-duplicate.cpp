@@ -1,16 +1,13 @@
 class Solution {
 public:
-    bool containsDuplicateOptimised(vector<int>&arr){
-        int n = arr.size();
-        unordered_map<int,int>mp;
-        for(int i=0;i<n;i++){
-            if(mp.find(arr[i])!=mp.end()) return true;
-            mp[arr[i]]++;
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int>st;
+        for(int i=0;i<nums.size();i++){
+            if(st.find(nums[i])!=st.end()){
+                return true;
+            }
+            st.insert(nums[i]);
         }
         return false;
-    }
-    bool containsDuplicate(vector<int>& nums) {
-        bool ans = containsDuplicateOptimised(nums);
-        return ans;
     }
 };
