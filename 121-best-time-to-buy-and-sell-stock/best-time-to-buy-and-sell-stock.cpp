@@ -3,11 +3,11 @@ public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
         int mini = prices[0];
-        int profit = 0;
-        for(int sellDay = 1;sellDay<n;sellDay++){
-            int ajjKadiff = prices[sellDay]-mini;
-            profit = max(profit,ajjKadiff);
-            mini = min(mini,prices[sellDay]);
+        int profit =0;
+        for(int i=1;i<n;i++){
+            int todayDiff = prices[i]-mini;
+            profit = max(profit,todayDiff);
+            mini = min(prices[i],mini);
         }
         return profit;
     }
